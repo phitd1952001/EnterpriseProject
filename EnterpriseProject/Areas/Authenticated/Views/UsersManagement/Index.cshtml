@@ -1,0 +1,57 @@
+@model IEnumerable<EnterpriseProject.Models.ApplicationUser>
+
+@{
+    Layout = "_Layout";
+}
+
+@if (Model.Any())
+{
+    <div class="row">
+        <div class="col-6">
+            <h1>User Table</h1>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Full Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Role</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        @{
+            var i = 1;
+        }
+        @foreach (var obj in @Model)
+        {
+            <tr>
+                <th scope="row">@i</th>
+                <td>@obj.FullName</td>
+                <td>@obj.Email</td>
+                <td>@obj.Role</td>
+                <td>
+                    <a asp-controller="UsersManagement" asp-action="Delete" onclick="confirm('Do you want to delete')" asp-route-id="@obj.Id" class="btn btn-danger">Delete</a>
+                    @if (obj.LockoutEnd < DateTime.Now || obj.LockoutEnd == null)
+                    {
+                        <a asp-controller="UsersManagement" asp-action="LockUnLock" asp-route-id="@obj.Id" class="btn btn-warning">Lock</a>
+                    }
+                    else
+                    {
+                        <a asp-controller="UsersManagement" asp-action="LockUnLock" asp-route-id="@obj.Id" class="btn btn-warning">UnLock</a>
+                    }
+                    <a asp-controller="UsersManagement" asp-action="Update" asp-route-id="@obj.Id" class="btn btn-warning">Update</a>
+                    <a asp-controller="UsersManagement" asp-action="ConfirmEmail" asp-route-id="@obj.Id" class="btn btn-success">Reset Password</a>
+                </td>
+            </tr>
+            i++;
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <h1>No any user manage</h1>
+}
