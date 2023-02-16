@@ -11,8 +11,7 @@ namespace EnterpriseProject.Models
         [NotMapped]
         public string Role { get; set; }
         
-        [Required]
-        public int DepartmentId { get; set; }
+        public int? DepartmentId { get; set; }
         [ForeignKey("DepartmentId")]
         public Department Department { get; set; }
     }
