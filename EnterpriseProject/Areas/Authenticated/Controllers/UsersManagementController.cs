@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EnterpriseProject.Areas.Authenticated.Controllers
 {
-    [Area("Authenticated")]
+    [Area(SD.Authenticated)]
     [Authorize(Roles = SD.Role_Admin)]
     public class UsersManagementController : Controller
     {
@@ -52,14 +52,20 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
         [HttpGet]
         public async Task<IActionResult> LockUnLock(string id)
         {
+            // lấy ra tài khoản chính mình tránh bị xóa nhầm
             var claimsIdentity = (ClaimsIdentity) User.Identity;
             var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-
+            
+            // xuống database tìm kiếm tài khoản theo Id.
             var userNeedToLock = _db.ApplicationUsers.Where(u => u.Id == id).First();
             if (userNeedToLock.Id == claims.Value)
             {
                 //show that you're using your own earphones
             }
+
+            // Lock_out_end = null : hoặc bằng time quá khứ thì nó sẽ không lock, Bởi vì thời gian nằm ở quá khứ rồi thì thời gian hiện tại thì tài khoản sẽ không bị lock nữa. 
+            // set time lock_out_end = time tương lai thì có nghĩa tài khoản sẽ bị khóa. 
+            //	Khi mà trường lock_out_end sẽ đi so sánh với cái trường time hiện tại. nếu mà cái thời gian hiện tại nó nhỏ hơn thì tài khoản bị kháo. Còn time lớn hơn hiện tại thì tài khoản đang được mở.
 
             if (userNeedToLock.LockoutEnd != null && userNeedToLock.LockoutEnd > DateTime.Now)
             {
@@ -83,8 +89,10 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                 UserVM userVm = new UserVM();
                 var user = _db.ApplicationUsers.Find(id);
                 userVm.ApplicationUser = user;
+                // hiển thị role cũ tránh khi ấn nút submit không chọn role
                 var roleTemp = await _userManager.GetRolesAsync(user);
                 userVm.Role = roleTemp.First();
+                // Hiển thị thêm cái role list. Nếu người dùng muốn update cái role.
                 userVm.Rolelist = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem()
                 {
                     Text = i,
@@ -104,8 +112,11 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                 user.FullName = userVm.ApplicationUser.FullName;
                 user.PhoneNumber = userVm.ApplicationUser.PhoneNumber;
 
+                // update role
                 var oldRole = await _userManager.GetRolesAsync(user);
+                // xóa đi role cu
                 await _userManager.RemoveFromRoleAsync(user, oldRole.First());
+                // add role mới
                 await _userManager.AddToRoleAsync(user, userVm.Role);
 
                 _db.ApplicationUsers.Update(user);
@@ -139,6 +150,8 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                 return View();
             }
 
+            // khởi tạo ConfirmEmailVM
+            // đưa giá trị Confirm EmailVM vào model bên dưới.
             ConfirmEmailVM confirmEmailVm = new ConfirmEmailVM()
             {
                 Email = user.Email
@@ -148,15 +161,18 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
         }
 
         [HttpPost]
-        
+        // nhận giá trị về từ ConfirmEmailVM
         public async Task<IActionResult> ConfirmEmail(ConfirmEmailVM confirmEmailVm)
         {
             if (ModelState.IsValid)
             {
+                // dùng thư viện _userManager xuống db để kiem tra user.
                 var user = await _userManager.FindByEmailAsync(confirmEmailVm.Email);
-
+                // token này sẽ check xem coi có đúng với token và hệ thống đã giử cho email này hay không.
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
                 
+                // chuyển đến tran ResetPassword => controller UsersManagement
+                // từ khóa new khởi tạo 1 object, value toke ở ConfirmEmailVM = token ở trang resetPassword. email cũng tương tự.
                 return RedirectToAction("ResetPassword", "UsersManagement", new {token = token, email = user.Email});
             }
 
@@ -170,7 +186,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             {
                 ModelState.AddModelError("","Invalid password reset token");
             }
-
+            
             ResetPasswordViewModel resetPasswordViewModel = new ResetPasswordViewModel()
             {
                 Email = email,

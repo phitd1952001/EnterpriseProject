@@ -10,5 +10,10 @@ namespace EnterpriseProject.Models
         public string FullName { get; set; }
         [NotMapped]
         public string Role { get; set; }
+        
+        [Required]
+        public int DepartmentId { get; set; }
+        [ForeignKey("DepartmentId")]
+        public Department Department { get; set; }
     }
 }
