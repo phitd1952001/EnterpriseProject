@@ -1,0 +1,71 @@
+﻿@model IEnumerable<EnterpriseProject.Models.Idea>
+
+@{
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-6">
+        <h1>Idea Table</h1>
+    </div>
+    <div class="col-6">
+        <a asp-controller="Ideas" asp-action="Upsert" class="btn btn-success">Create New Idea</a>
+        <form class="form-inline my-2 my-lg-0 float-right">
+            <input id="myInput" class="form-control mr-sm-2" type="text" placeholder="Search">
+        </form>
+    </div>
+</div>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Text</th>
+        <th scope="col">File Path</th>
+        <th scope="col">Datetime</th>
+        <th scope="col">Category</th>
+        <th scope="col">Topic</th>
+        <th scope="col">Action</th>
+    </tr>
+    </thead>
+    <tbody id="tblData">
+    
+    
+
+    <form method="get" asp-action="Index" asp-controller="Ideas">
+    </form>
+    
+    @foreach (var obj in @Model)
+    {
+        <tr>
+            <th scope="row">@obj.Id</th>
+            <td>@obj.Text</td>
+            <td>@obj.FilePath</td>
+            <td>@obj.DateTime</td>
+            <td>@obj.CategoryId</td>
+            <td>@obj.TopicId</td>
+            <td>@obj.UserId</td>
+            <td>
+                <a asp-controller="Ideas" asp-action="Upsert" asp-route-id="@obj.Id" class="btn btn-warning">Update</a>
+                <a asp-controller="Ideas" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+    
+    
+    
+    @section Scripts
+    {
+        <script>
+         $(document).ready(function (){
+             $("#myInput").on("keyup", function(){
+              var value = $(this).val().toLowerCase();
+             $("#tblData tr").filter(function (){
+                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+             });
+         });
+     });
+
+         </script>
+    }
+</table>

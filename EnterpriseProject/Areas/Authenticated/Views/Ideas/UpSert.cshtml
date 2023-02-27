@@ -1,0 +1,37 @@
+﻿@model EnterpriseProject.ViewModels.IdeaVM
+
+@{
+    Layout = "_Layout";
+    var title = @Model.Id != 0 ? "Update Idea" : "Create Idea";
+}
+
+<h1>@title</h1>
+<form method="post">
+    <input asp-for="Id" class="form-control" hidden>
+    <div class="mb-3">
+        <label asp-for="Text" class="form-label"></label>
+        <input asp-for="Text" class="form-control">
+        <span asp-validation-for="Text" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="FilePath" class="form-label"></label>
+        <input asp-for="FilePath" class="form-control">
+        <span asp-validation-for="FilePath" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="DateTime" class="form-label"></label>
+        <input asp-for="DateTime" class="form-control">
+        <span asp-validation-for="DateTime" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="CategoryId" class="form-label"></label>
+        @Html.DropDownListFor(m => m.CategoryId, Model.CategoryList, "Please select category", new { @class = "form-control" })
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="TopicId" class="form-label"></label>
+        @Html.DropDownListFor(m => m.TopicId, Model.TopicList, "Please select topic", new { @class = "form-control" })
+        <span asp-validation-for="TopicId" class="text-danger"></span>
+        </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
