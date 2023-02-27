@@ -10,7 +10,10 @@ namespace EnterpriseProject.ViewModels
         
         [Required]
         public string Role { get; set; }
+        [Required]
+        public int DepartmentId { get; set; }
         public IEnumerable<SelectListItem> Rolelist { get; set; }
+        public IEnumerable<SelectListItem> Departmentlist { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
     }
 }

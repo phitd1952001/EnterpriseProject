@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -98,6 +99,10 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                     Text = i,
                     Value = i
                 });
+
+                userVm.DepartmentId = user.DepartmentId ?? 0;
+                userVm.Departmentlist = DepartmentSelectListItems();
+                
                 return View(userVm);
             }
             return NotFound();
@@ -111,6 +116,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                 var user = _db.ApplicationUsers.Find(userVm.ApplicationUser.Id);
                 user.FullName = userVm.ApplicationUser.FullName;
                 user.PhoneNumber = userVm.ApplicationUser.PhoneNumber;
+                user.DepartmentId = userVm.DepartmentId;
 
                 // update role
                 var oldRole = await _userManager.GetRolesAsync(user);
@@ -123,10 +129,23 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                 _db.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
+            
+            userVm.Departmentlist = DepartmentSelectListItems();
             return View(userVm);
         }
-
         
+        [NonAction]
+        private IEnumerable<SelectListItem> DepartmentSelectListItems()
+        {
+            var Department = _db.Departments.ToList().Select(i => new SelectListItem()
+            {
+                Text = i.Name,
+                Value = i.Id.ToString()
+            });
+            return Department;
+        }
+
+                                                                                                                                                                        
         [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
