@@ -1,0 +1,27 @@
+﻿@model EnterpriseProject.Models.Topic
+
+@{
+    Layout = "_Layout";
+    var title = @Model.Id != 0 ? "Update Topic" : "Create Topic";
+}
+
+<h1>@title</h1>
+<form method="post">
+    <input asp-for="Id" class="form-control" hidden>
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control">
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="ClosureDate" class="form-label"></label>
+        <input asp-for="ClosureDate" class="form-control">
+        <span asp-validation-for="ClosureDate" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="FinalClosureDate" class="form-label"></label>
+        <input asp-for="FinalClosureDate" class="form-control">
+        <span asp-validation-for="FinalClosureDate" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

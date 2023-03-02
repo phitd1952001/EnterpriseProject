@@ -10,7 +10,7 @@ namespace EnterpriseProject.Models
         public int Id { get; set; }
 
         public string Text { get; set; }
-        public string FilePath { get; set; }
+        public int FileId { get; set; }
         public DateTime DateTime { get; set; }
         
         [Required]

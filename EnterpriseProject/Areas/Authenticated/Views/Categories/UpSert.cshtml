@@ -1,0 +1,17 @@
+﻿@model EnterpriseProject.Models.Category
+
+@{
+    Layout = "_Layout";
+    var title = @Model.Id != 0 ? "Update Categories" : "Create Categories";
+}
+
+<h1>@title</h1>
+<form method="post">
+    <input asp-for="Id" class="form-control" hidden>
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control">
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
