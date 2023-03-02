@@ -22,5 +22,6 @@ namespace EnterpriseProject.Data
         public DbSet<React> Reacts { get; set; }
         public DbSet<Topic> Topics { get; set; }
         public DbSet<View> Views { get; set; }
+        public DbSet<File> Files { get; set; }
     }
 }

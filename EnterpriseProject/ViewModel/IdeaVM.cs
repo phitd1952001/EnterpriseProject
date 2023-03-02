@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using EnterpriseProject.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EnterpriseProject.ViewModels
@@ -15,5 +16,6 @@ namespace EnterpriseProject.ViewModels
         public int TopicId { get; set; }
         public IEnumerable<SelectListItem> CategoryList { get; set; }
         public IEnumerable<SelectListItem> TopicList { get; set; }
+        public IFormFile File { get; set; }
     }
 }

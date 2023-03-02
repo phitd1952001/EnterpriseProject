@@ -6,7 +6,7 @@
 }
 
 <h1>@title</h1>
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     <input asp-for="Id" class="form-control" hidden>
     <div class="mb-3">
         <label asp-for="Text" class="form-label"></label>
@@ -14,9 +14,8 @@
         <span asp-validation-for="Text" class="text-danger"></span>
     </div>
     <div class="mb-3">
-        <label asp-for="FilePath" class="form-label"></label>
-        <input asp-for="FilePath" class="form-control">
-        <span asp-validation-for="FilePath" class="text-danger"></span>
+        <label class="form-label">File</label>
+        <input type="file" name="File" class="form-control">
     </div>
     <div class="mb-3">
         <label asp-for="DateTime" class="form-label"></label>

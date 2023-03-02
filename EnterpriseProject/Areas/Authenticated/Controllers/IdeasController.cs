@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using EnterpriseProject.Data;
 using EnterpriseProject.Models;
 using EnterpriseProject.Utility;
 using EnterpriseProject.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using File = EnterpriseProject.Models.File;
 
 namespace EnterpriseProject.Areas.Authenticated.Controllers
 {
@@ -23,7 +27,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
         // GET
         public IActionResult Index()
         {
-            var listIdea = _db.Ideas.ToList();
+            var listIdea = _db.Ideas.Include( i => i.ApplicationUser).ToList();
             return View(listIdea);
         }
 
@@ -45,7 +49,6 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             ideaVm.Id = idea.Id;
             ideaVm.Text = idea.Text;
             ideaVm.DateTime = idea.DateTime;
-            ideaVm.FilePath = idea.FilePath;
             ideaVm.CategoryId = idea.CategoryId;
             ideaVm.TopicId = idea.TopicId;
 
@@ -53,7 +56,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
         }
         
         [HttpPost]
-        public IActionResult UpSert(IdeaVM ideaVm)
+        public async Task<IActionResult> UpSert(IdeaVM ideaVm)
         {
             if (ModelState.IsValid)
             {
@@ -62,11 +65,28 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
 
                 if (ideaVm.Id == 0)
                 {
+                    if (ideaVm.File == null || ideaVm.File.Length == 0)
+                        return BadRequest("No file selected");
+
+                    var fileModel = new File
+                    {
+                        Name = ideaVm.File.FileName,
+                        ContentType = ideaVm.File.ContentType
+                    };
+
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await ideaVm.File.CopyToAsync(memoryStream);
+                        fileModel.Data = memoryStream.ToArray();
+                    }
+                    _db.Files.Add(fileModel);
+                    _db.SaveChanges();
+                    
                     var ideaCreate = new Idea()
                     {
                         Text = ideaVm.Text,
                         DateTime = ideaVm.DateTime,
-                        FilePath = ideaVm.FilePath,
+                        FileId = fileModel.Id,
                         CategoryId = ideaVm.CategoryId,
                         TopicId = ideaVm.TopicId,
                         UserId = claims.Value
@@ -78,11 +98,32 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
 
                 var idea = _db.Ideas.Find(ideaVm.Id);
                 idea.Text = ideaVm.Text;
-                idea.FilePath = ideaVm.FilePath;
                 idea.DateTime = ideaVm.DateTime;
                 idea.CategoryId = ideaVm.CategoryId;
                 idea.TopicId = ideaVm.TopicId;
                 idea.UserId = claims.Value;
+
+                if (ideaVm.File != null && ideaVm.File.Length != 0)
+                {
+                    var fileModel = new File
+                    {
+                        Name = ideaVm.File.FileName,
+                        ContentType = ideaVm.File.ContentType
+                    };
+
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await ideaVm.File.CopyToAsync(memoryStream);
+                        fileModel.Data = memoryStream.ToArray();
+                    }
+                    // luu file new
+                    _db.Files.Add(fileModel);
+                    // xoa file cu
+                    var oldFile = _db.Files.Find(idea.FileId);
+                    _db.Remove(oldFile);
+                    _db.SaveChanges();
+                    idea.FileId = fileModel.Id;
+                }
                 
                 _db.Update(idea);
                 _db.SaveChanges();
@@ -126,6 +167,14 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             return result;
         }
         
-        
+        public async Task<IActionResult> Download(int id)
+        {
+            var fileModel = await _db.Files.FindAsync(id);
+            if (fileModel == null)
+                return NotFound();
+
+            return File(fileModel.Data, fileModel.ContentType, fileModel.Name);
+        }
     }
+    
 }
