@@ -1,4 +1,4 @@
-﻿@model IEnumerable<EnterpriseProject.Models.Idea>
+﻿@model IEnumerable<EnterpriseProject.ViewModels.ReactVM>
 
 @{
     Layout = "_Layout";
@@ -21,7 +21,6 @@
     <tr>
         <th scope="col">#</th>
         <th scope="col">Text</th>
-        <th scope="col">File Path</th>
         <th scope="col">Datetime</th>
         <th scope="col">Category</th>
         <th scope="col">Topic</th>
@@ -40,16 +39,17 @@
     @foreach (var obj in @Model)
     {
         <tr>
-            <th scope="row">@obj.Id</th>
-            <td>@obj.Text</td>
-            <td>@obj.FileId</td>
-            <td>@obj.DateTime</td>
-            <td>@obj.CategoryId</td>
-            <td>@obj.TopicId</td>
-            <td>@obj.ApplicationUser.FullName</td>
+            <th scope="row">@obj.Idea.Id</th>
+            <td>@obj.Idea.Text</td>
+            <td>@obj.Idea.DateTime</td>
+            <td>@obj.Idea.Category.Name</td>
+            <td>@obj.Idea.Topic.Name</td>
+            <td>@obj.Idea.ApplicationUser.FullName</td>
+            <td>@obj.Like</td>
+            <td>@obj.DisLike</td>
             <td>
-                <a asp-controller="React" asp-action="Like" asp-route-ideaId="@obj.Id" class="btn btn-warning">Like</a>
-                <a asp-controller="React" asp-action="DisLike" asp-route-ideaId="@obj.Id" class="btn btn-warning">DisLike</a>
+                <a asp-controller="React" asp-action="Like" asp-route-ideaId="@obj.Idea.Id" class="btn btn-warning">Like</a>
+                <a asp-controller="React" asp-action="DisLike" asp-route-ideaId="@obj.Idea.Id" class="btn btn-warning">DisLike</a>
             </td>
         </tr>
     }

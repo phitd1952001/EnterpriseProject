@@ -1,8 +1,10 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using EnterpriseProject.Data;
 using EnterpriseProject.Models;
 using EnterpriseProject.Utility;
+using EnterpriseProject.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,8 +25,27 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
         // GET
         public IActionResult Index()
         {
-            var listIdea = _db.Ideas.Include(i => i.ApplicationUser).ToList();
-            return View(listIdea);
+            var listIdea = _db.Ideas.Include(i => i.ApplicationUser)
+                .Include(i => i.Category)
+                .Include(i => i.Topic).ToList();
+            var reacts = new List<ReactVM>();
+            
+            foreach (var idea in listIdea)
+            {
+                var like = _db.Reacts.Where(_ => _.IdeaId == idea.Id).Sum(_ => _.Like);
+                var disLike = _db.Reacts.Where(_ => _.IdeaId == idea.Id).Sum(_ => _.DisLike);
+                var react = new ReactVM()
+                {
+                    Idea = idea,
+                    Like = like,
+                    DisLike = disLike
+                };
+                
+                reacts.Add(react);
+            }
+            
+            
+            return View(reacts);
         }
 
         [HttpGet]
@@ -46,7 +67,24 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                 _db.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
-
+            else
+            {
+                if (react.DisLike == 0 && react.Like == 0)
+                {
+                    react.Like = 1;
+                }
+                else if (react.DisLike == 0)
+                {
+                    react.Like = 0;
+                }
+                else
+                {
+                    react.DisLike = 0;
+                    react.Like = 1;
+                }
+            }
+            _db.Reacts.Update(react);
+            _db.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
 
@@ -69,6 +107,24 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                 _db.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
+            else
+            {
+                if (react.DisLike == 0 && react.Like == 0)
+                {
+                    react.DisLike = 1;
+                }
+                else if (react.Like == 0)
+                {
+                    react.DisLike = 0;
+                }
+                else
+                {
+                    react.Like = 0;
+                    react.DisLike = 1;
+                }
+            }
+            _db.Reacts.Update(react);
+            _db.SaveChanges();
 
             return RedirectToAction(nameof(Index));
         }
