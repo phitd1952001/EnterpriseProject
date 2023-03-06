@@ -1,8 +1,10 @@
 using System;
 using System.Linq;
+using System.Net.Mime;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using EnterpriseProject.Data;
+using EnterpriseProject.Models;
 using EnterpriseProject.Utility;
 using EnterpriseProject.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -109,8 +111,11 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             if (ModelState.IsValid)
             {
                 var user = _db.ApplicationUsers.Find(userVm.ApplicationUser.Id);
+                user.PassportID = userVm.ApplicationUser.PassportID;
                 user.FullName = userVm.ApplicationUser.FullName;
                 user.PhoneNumber = userVm.ApplicationUser.PhoneNumber;
+                user.Birthday = userVm.ApplicationUser.Birthday;
+                user.Address = userVm.ApplicationUser.Address;
 
                 // update role
                 var oldRole = await _userManager.GetRolesAsync(user);

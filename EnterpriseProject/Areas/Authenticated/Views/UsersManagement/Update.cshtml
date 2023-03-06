@@ -13,9 +13,24 @@
         <span asp-validation-for="ApplicationUser.FullName" class="text-danger"></span>
     </div>
     <div class="mb-3">
+        <label asp-for="ApplicationUser.PassportID" class="form-label"></label>
+        <input asp-for="ApplicationUser.PassportID" class="form-control">
+        <span asp-validation-for="ApplicationUser.PassportID" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
         <label asp-for="ApplicationUser.PhoneNumber" class="form-label"></label>
         <input asp-for="ApplicationUser.PhoneNumber" class="form-control">
         <span asp-validation-for="ApplicationUser.PhoneNumber" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="ApplicationUser.Birthday" class="form-label"></label>
+        <input asp-for="ApplicationUser.Birthday" class="form-control">
+        <span asp-validation-for="ApplicationUser.Birthday" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="ApplicationUser.Address" class="form-label"></label>
+        <input asp-for="ApplicationUser.Address" class="form-control">
+        <span asp-validation-for="ApplicationUser.Address" class="text-danger"></span>
     </div>
     <div class="mb-3">
         <label asp-for="Role" class="form-label"></label>
