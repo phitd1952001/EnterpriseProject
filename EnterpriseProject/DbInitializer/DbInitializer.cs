@@ -35,11 +35,12 @@ namespace EnterpriseProject.DbInitializer
             }
 
             if (_db.Roles.Any(r => r.Name == SD.Role_Admin)) return;
+            if (_db.Roles.Any(r => r.Name == SD.Role_Manager)) return;
             if (_db.Roles.Any(r => r.Name == SD.Role_Staff)) return;
-           
             
 
             _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).GetAwaiter().GetResult();
+            _roleManager.CreateAsync(new IdentityRole(SD.Role_Manager)).GetAwaiter().GetResult();
             _roleManager.CreateAsync(new IdentityRole(SD.Role_Staff)).GetAwaiter().GetResult();
            
 

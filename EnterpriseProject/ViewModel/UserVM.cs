@@ -11,6 +11,7 @@ namespace EnterpriseProject.ViewModels
         [Required]
         public string Role { get; set; }
         public IEnumerable<SelectListItem> Rolelist { get; set; }
+        public IEnumerable<SelectListItem> Gender { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
     }
 }

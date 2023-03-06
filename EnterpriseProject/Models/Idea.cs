@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace EnterpriseProject.Models
 {
-    public class Idea
+    public class Idea 
     {
         [Key]
         public int Id { get; set; }
@@ -27,5 +29,6 @@ namespace EnterpriseProject.Models
         public int TopicId { get; set; }
         [ForeignKey("TopicId")]
         public Topic Topic { get; set; }
+        
     }
 }

@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
 
 namespace EnterpriseProject.Areas.Identity.Pages.Account
 {
@@ -60,7 +61,6 @@ namespace EnterpriseProject.Areas.Identity.Pages.Account
             [Required]
             public string PhoneNumber { get; set; }
             
-
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
@@ -73,7 +73,15 @@ namespace EnterpriseProject.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
 
             public IQueryable<SelectListItem> RoleList { get; set; }
+            [Required]
             public string FullName { get; set; }
+            
+            [Required]
+            public string PassportID  { get; set; }
+            [Required]
+            public DateTime Birthday { get; set; }
+            [Required] 
+            public string Address { get; set; }
             public string Role { get; set; }
         }
 
@@ -95,7 +103,10 @@ namespace EnterpriseProject.Areas.Identity.Pages.Account
                     UserName = Input.Email, 
                     Email = Input.Email,
                     FullName = Input.FullName,
-                    PhoneNumber = Input.PhoneNumber
+                    PassportID = Input.PassportID,
+                    PhoneNumber = Input.PhoneNumber,
+                    Birthday = Input.Birthday,
+                    Address = Input.Address
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
@@ -103,6 +114,10 @@ namespace EnterpriseProject.Areas.Identity.Pages.Account
                     if (Input.Role == SD.Role_Admin)
                     {
                         await _userManager.AddToRoleAsync(user, SD.Role_Admin);
+                    }
+                    if (Input.Role == SD.Role_Manager)
+                    {
+                        await _userManager.AddToRoleAsync(user, SD.Role_Manager);
                     }
                     if (Input.Role == SD.Role_Staff)
                     {
