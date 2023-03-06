@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using EnterpriseProject.Data;
 using EnterpriseProject.Models;
 using EnterpriseProject.Utility;
 using Microsoft.AspNetCore.Authentication;
@@ -28,6 +29,7 @@ namespace EnterpriseProject.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ApplicationDbContext _db;
 
 
         public RegisterModel(
@@ -35,13 +37,15 @@ namespace EnterpriseProject.Areas.Identity.Pages.Account
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            ApplicationDbContext db)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
             _roleManager = roleManager;
+            _db = db;
         }
 
         [BindProperty]
@@ -72,8 +76,8 @@ namespace EnterpriseProject.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
-            public IQueryable<SelectListItem> RoleList { get; set; }
-            [Required]
+            public List<SelectListItem> RoleList { get; set; }
+            public List<SelectListItem> DepartmentList { get; set; }
             public string FullName { get; set; }
             
             [Required]
@@ -83,11 +87,12 @@ namespace EnterpriseProject.Areas.Identity.Pages.Account
             [Required] 
             public string Address { get; set; }
             public string Role { get; set; }
+            public int DepartmentId { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            GetRole();
+            GetSelectItems();
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
@@ -106,7 +111,8 @@ namespace EnterpriseProject.Areas.Identity.Pages.Account
                     PassportID = Input.PassportID,
                     PhoneNumber = Input.PhoneNumber,
                     Birthday = Input.Birthday,
-                    Address = Input.Address
+                    Address = Input.Address,
+                    DepartmentId = Input.DepartmentId
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
@@ -153,13 +159,13 @@ namespace EnterpriseProject.Areas.Identity.Pages.Account
                 }
             }
 
-            GetRole();
+            GetSelectItems();
             // If we got this far, something failed, redisplay form
             return Page();
             
         }
         
-        private void GetRole()
+        private void GetSelectItems()
         {
             Input = new InputModel()
             {
@@ -167,7 +173,12 @@ namespace EnterpriseProject.Areas.Identity.Pages.Account
                 {
                     Text = i,
                     Value = i
-                })
+                }).ToList(),
+                DepartmentList = _db.Departments.ToList().Select(x => new SelectListItem()
+                {
+                    Text = x.Name,
+                    Value = x.Id.ToString()
+                }).ToList()
             };
         }
     }
