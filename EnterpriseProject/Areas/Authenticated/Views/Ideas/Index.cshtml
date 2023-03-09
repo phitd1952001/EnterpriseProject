@@ -45,12 +45,13 @@
             <td>@obj.CategoryId</td>
             <td>@obj.TopicId</td>
             <td>@obj.ApplicationUser.FullName</td>
-            <td>@obj.</td>
-            <td>@obj.ApplicationUser.FullName</td>
+            
+            
             <td>
                 <a asp-controller="Ideas" asp-action="Upsert" asp-route-id="@obj.Id" class="btn btn-warning">Update</a>
                 <a asp-controller="Ideas" asp-action="Download" asp-route-id="@obj.FileId" class="btn btn-primary">Download</a>
                 <a asp-controller="Ideas" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-danger">Delete</a>
+                <a asp-controller="React" asp-action="Index" asp-route-id="@obj.Id" class="btn btn-warning">Details</a>
             </td>
         </tr>
     }

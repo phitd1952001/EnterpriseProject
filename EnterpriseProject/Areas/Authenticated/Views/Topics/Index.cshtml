@@ -42,6 +42,7 @@
             <td>
                 <a asp-controller="Topics" asp-action="Upsert" asp-route-id="@obj.Id" class="btn btn-warning">Update</a>
                 <a asp-controller="Topics" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-danger">Delete</a>
+                <a asp-controller="Ideas" asp-action="Index" asp-route-id="@obj.Id" class="btn btn-warning">Details</a>
             </td>
         </tr>
     }
