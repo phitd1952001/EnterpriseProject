@@ -54,17 +54,18 @@
         </tr>
     }
     </tbody>
-    @section Scripts
-        {
-            <script>
-             $(document).ready(function (){
-                 $("#myInput").on("keyup", function(){
-                  var value = $(this).val().toLowerCase();
-                 $("#tblData tr").filter(function (){
-                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                 });
+</table>
+
+@section Scripts
+{
+    <script>
+         $(document).ready(function (){
+             $("#myInput").on("keyup", function(){
+              var value = $(this).val().toLowerCase();
+             $("#tblData tr").filter(function (){
+                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
              });
          });
-             </script>
-        }
-</table>
+     });
+    </script>
+}

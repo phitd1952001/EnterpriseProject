@@ -40,12 +40,10 @@
         <tr>
             <th scope="row">@obj.Id</th>
             <td>@obj.Text</td>
-             <td>@obj.FileId</td>
+            <td>@obj.FileId</td>
             <td>@obj.DateTime</td>
             <td>@obj.CategoryId</td>
             <td>@obj.TopicId</td>
-            <td>@obj.ApplicationUser.FullName</td>
-            <td>@obj.</td>
             <td>@obj.ApplicationUser.FullName</td>
             <td>
                 <a asp-controller="Ideas" asp-action="Upsert" asp-route-id="@obj.Id" class="btn btn-warning">Update</a>
@@ -55,12 +53,11 @@
         </tr>
     }
     </tbody>
-    
-    
-    
-    @section Scripts
-    {
-        <script>
+</table>
+
+@section Scripts
+{
+    <script>
          $(document).ready(function (){
              $("#myInput").on("keyup", function(){
               var value = $(this).val().toLowerCase();
@@ -69,6 +66,5 @@
              });
          });
      });
-         </script>
-    }
-</table>
+    </script>
+}

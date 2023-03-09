@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using EnterpriseProject.Data;
 using EnterpriseProject.Models;
 using EnterpriseProject.Utility;
 using EnterpriseProject.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 namespace EnterpriseProject.Areas.Authenticated.Controllers
 {
     [Area(SD.Authenticated)]
+    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Manager)]
     public class ReactController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -23,7 +26,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
         }
 
         // GET
-        public IActionResult Index()
+        public IActionResult Index(string searchString)
         {
             var listIdea = _db.Ideas.Include(i => i.ApplicationUser)
                 .Include(i => i.Category)
@@ -42,6 +45,11 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                 };
                 
                 reacts.Add(react);
+            }
+            
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                listIdea = listIdea.Where(s => s.Text.Contains(searchString)).ToList();
             }
             
             

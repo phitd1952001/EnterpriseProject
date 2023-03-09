@@ -7,10 +7,11 @@
 @if (Model.Any())
 {
     <div class="row">
-        <div class="col-8">
+        <div class="col-3">
             <h1>User Table</h1>
         </div>
-        <div class="col-4">
+        <div class="col-9">
+            <a class="btn btn-success" asp-area="Identity" asp-page="/Account/Register"><i class="fas fa-plus"></i> &nbsp; Create New User</a>
             <form class="form-inline my-2 my-lg-0 float-right">
                 <input id="myInput" class="form-control mr-sm-2" type="text" placeholder="Search">
             </form>
@@ -26,7 +27,7 @@
             <th scope="col">Action</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="tblData">
         @{
             var i = 1;
         }
@@ -60,3 +61,18 @@ else
 {
     <h1>No any user manage</h1>
 }
+
+@section Scripts
+{
+    <script>
+     $(document).ready(function (){
+       $("#myInput").on("keyup", function(){
+         var value = $(this).val().toLowerCase();
+         $("#tblData tr").filter(function (){
+         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+         });
+       });
+     });
+    </script>
+}
+

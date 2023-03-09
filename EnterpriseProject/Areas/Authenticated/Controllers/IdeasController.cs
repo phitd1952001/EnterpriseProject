@@ -8,6 +8,7 @@ using EnterpriseProject.Data;
 using EnterpriseProject.Models;
 using EnterpriseProject.Utility;
 using EnterpriseProject.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,7 @@ using File = EnterpriseProject.Models.File;
 namespace EnterpriseProject.Areas.Authenticated.Controllers
 {
     [Area(SD.Authenticated)]
+    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Manager)]
     public class IdeasController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -25,9 +27,13 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             _db = db;
         }
         // GET
-        public IActionResult Index()
+        public IActionResult Index(string searchString)
         {
             var listIdea = _db.Ideas.Include( i => i.ApplicationUser).ToList();
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                listIdea = listIdea.Where(s => s.Text.Contains(searchString)).ToList();
+            }
             return View(listIdea);
         }
 

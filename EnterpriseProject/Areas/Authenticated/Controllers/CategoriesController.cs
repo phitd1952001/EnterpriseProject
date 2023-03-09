@@ -4,11 +4,13 @@ using System.Linq;
 using EnterpriseProject.Data;
 using EnterpriseProject.Models;
 using EnterpriseProject.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EnterpriseProject.Areas.Authenticated.Controllers
 {
     [Area(SD.Authenticated)]
+    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Manager)]
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _db;

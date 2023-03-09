@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mime;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using EnterpriseProject.Data;
-using EnterpriseProject.Models;
 using EnterpriseProject.Utility;
 using EnterpriseProject.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -16,7 +14,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace EnterpriseProject.Areas.Authenticated.Controllers
 {
     [Area(SD.Authenticated)]
-    [Authorize(Roles = SD.Role_Admin)]
+    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Manager)]
     public class UsersManagementController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -31,14 +29,14 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
         }
         // GET
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
             // get all users except login id
             var claimsIdentity = (ClaimsIdentity) User.Identity;
             var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
             //used to avoid deleting your role by mistake
-            var userList = _db.ApplicationUsers.Where(u => u.Id != claims.Value); 
+            var userList = _db.ApplicationUsers.Where(u => u.Id != claims.Value).ToList(); 
 
             foreach (var user in userList)
             {
@@ -48,8 +46,13 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                 var roleTemp = await _userManager.GetRolesAsync(user);
                 user.Role = roleTemp.FirstOrDefault();
             }
+            
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                userList = userList.Where(s => s.Email.Contains(searchString)).ToList();
+            }
 
-            return View(userList.ToList());
+            return View(userList);
         }
         
         [HttpGet]

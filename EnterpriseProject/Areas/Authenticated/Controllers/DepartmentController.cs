@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace EnterpriseProject.Areas.Authenticated.Controllers
 {
     [Area(SD.Authenticated)]
-    [Authorize(Roles = SD.Role_Admin)]
+    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Manager)]
     public class DepartmentController : Controller
     {
         private readonly ApplicationDbContext _db;
