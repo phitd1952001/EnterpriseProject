@@ -9,7 +9,6 @@ namespace EnterpriseProject.Models
         public int Id { get; set; }
         public int Like { get; set; }
         public int DisLike { get; set; }
-        
 
         [Required]
         public string UserId { get; set; }

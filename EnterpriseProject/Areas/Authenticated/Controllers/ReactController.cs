@@ -31,8 +31,8 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             var listIdea = _db.Ideas.Include(i => i.ApplicationUser)
                 .Include(i => i.Category)
                 .Include(i => i.Topic).ToList();
-            var reacts = new List<ReactVM>();
             
+            var reacts = new List<ReactVM>();
             foreach (var idea in listIdea)
             {
                 var like = _db.Reacts.Where(_ => _.IdeaId == idea.Id).Sum(_ => _.Like);
@@ -51,8 +51,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             {
                 listIdea = listIdea.Where(s => s.Text.Contains(searchString)).ToList();
             }
-            
-            
+
             return View(reacts);
         }
 

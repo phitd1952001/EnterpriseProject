@@ -9,6 +9,7 @@ using EnterpriseProject.Models;
 using EnterpriseProject.Utility;
 using EnterpriseProject.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -43,7 +44,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             IdeaVM ideaVm = new IdeaVM()
             {
                 CategoryList = categoriesSelectListItems(),
-                TopicList = topicSelectListItems()
+                TopicList = topicSelectListItems(),
             };
             
             if (id == null)
