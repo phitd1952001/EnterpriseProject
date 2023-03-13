@@ -25,6 +25,7 @@
     <ItemGroup>
       <_ContentIncludedByDefault Remove="Views\Home\Index.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Home\Privacy.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Authenticated\Views\React\Index.cshtml" />
     </ItemGroup>
 
 </Project>

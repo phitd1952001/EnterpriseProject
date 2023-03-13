@@ -24,34 +24,6 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
         }
 
         // GET
-        public IActionResult Index(string searchString)
-        {
-            var listIdea = _db.Ideas.Include(i => i.ApplicationUser)
-                .Include(i => i.Category)
-                .Include(i => i.Topic).ToList();
-            
-            var reacts = new List<ReactVM>();
-            foreach (var idea in listIdea)
-            {
-                var like = _db.Reacts.Where(_ => _.IdeaId == idea.Id).Sum(_ => _.Like);
-                var disLike = _db.Reacts.Where(_ => _.IdeaId == idea.Id).Sum(_ => _.DisLike);
-                var react = new ReactVM()
-                {
-                    Idea = idea,
-                    Like = like,
-                    DisLike = disLike
-                };
-                
-                reacts.Add(react);
-            }
-            
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                listIdea = listIdea.Where(s => s.Text.Contains(searchString)).ToList();
-            }
-
-            return View(reacts);
-        }
 
         [HttpGet]
         public IActionResult Like(int ideaId)
@@ -70,7 +42,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                 };
                 _db.Reacts.Add(newReact);
                 _db.SaveChanges();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Ideas");
             }
             else
             {
@@ -90,7 +62,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             }
             _db.Reacts.Update(react);
             _db.SaveChanges();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Ideas");
         }
 
         [HttpGet]
@@ -110,7 +82,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                 };
                 _db.Reacts.Add(NewReact);
                 _db.SaveChanges();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Ideas");
             }
             else
             {
@@ -131,7 +103,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             _db.Reacts.Update(react);
             _db.SaveChanges();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Ideas");
         }
     }
 }

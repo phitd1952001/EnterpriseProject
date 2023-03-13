@@ -1,4 +1,4 @@
-﻿@model IEnumerable<EnterpriseProject.Models.Idea>
+﻿@model IEnumerable<EnterpriseProject.ViewModels.ReactVM>
 
 @{
     Layout = "_Layout";
@@ -25,6 +25,8 @@
         <th scope="col">Category</th>
         <th scope="col">Topic</th>
         <th scope="col">User</th>
+        <th scope="col">Like</th>
+        <th scope="col">Dislike</th>
         <th scope="col">Action</th>
     </tr>
     </thead>
@@ -36,18 +38,22 @@
     @foreach (var obj in @Model)
     {
         <tr>
-            <th scope="row">@obj.Id</th>
-            <td>@obj.Text</td>
-            <td>@obj.FileId</td>
-            <td>@obj.DateTime</td>
-            <td>@obj.CategoryId</td>
-            <td>@obj.TopicId</td>
-            <td>@obj.ApplicationUser.FullName</td>
+            <th scope="row">@obj.Idea.Id</th>
+            <td>@obj.Idea.Text</td>
+            <td>@obj.Idea.FileId</td>
+            <td>@obj.Idea.DateTime</td>
+            <td>@obj.Idea.Category.Name</td>
+            <td>@obj.Idea.Topic.Name</td>
+            <td>@obj.Idea.ApplicationUser.FullName</td>
+            <td>@obj.Like</td>
+            <td>@obj.DisLike</td>
             <td>
-                <a asp-controller="Ideas" asp-action="Upsert" asp-route-id="@obj.Id" class="btn btn-warning">Update</a>
-                <a asp-controller="Ideas" asp-action="Download" asp-route-id="@obj.FileId" class="btn btn-primary">Download</a>
-                <a asp-controller="Ideas" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-danger">Delete</a>
-                <a asp-controller="React" asp-action="Index" asp-route-id="@obj.Id" class="btn btn-warning">Details</a>
+                <a asp-controller="Ideas" asp-action="Upsert" asp-route-id="@obj.Idea.Id" class="btn btn-warning">Update</a>
+                <a asp-controller="Ideas" asp-action="Download" asp-route-id="@obj.Idea.FileId" class="btn btn-primary">Download</a>
+                <a asp-controller="Ideas" asp-action="Delete" asp-route-id="@obj.Idea.Id" class="btn btn-danger">Delete</a>
+                <a asp-controller="Comments" asp-action="Index" asp-route-ideaId="@obj.Idea.Id" class="btn btn-warning">Comments</a>
+                <a asp-controller="React" asp-action="Like" asp-route-ideaId="@obj.Idea.Id" class="btn btn-warning">Like</a>
+                <a asp-controller="React" asp-action="DisLike" asp-route-ideaId="@obj.Idea.Id" class="btn btn-warning">DisLike</a>
             </td>
         </tr>
     }

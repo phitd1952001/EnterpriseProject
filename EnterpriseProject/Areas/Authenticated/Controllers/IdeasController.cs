@@ -30,12 +30,32 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
         // GET
         public IActionResult Index(string searchString)
         {
-            var listIdea = _db.Ideas.Include( i => i.ApplicationUser).ToList();
+            var listIdea = _db.Ideas.Include(i => i.ApplicationUser)
+                .Include(i => i.Category)
+                .Include(i => i.Topic).ToList();
+            
+            var reacts = new List<ReactVM>();
+            
             if (!String.IsNullOrEmpty(searchString))
             {
                 listIdea = listIdea.Where(s => s.Text.Contains(searchString)).ToList();
             }
-            return View(listIdea);
+            
+            foreach (var idea in listIdea)
+            {
+                var like = _db.Reacts.Where(_ => _.IdeaId == idea.Id).Sum(_ => _.Like);
+                var disLike = _db.Reacts.Where(_ => _.IdeaId == idea.Id).Sum(_ => _.DisLike);
+                var react = new ReactVM()
+                {
+                    Idea = idea,
+                    Like = like,
+                    DisLike = disLike
+                };
+                
+                reacts.Add(react);
+            }
+
+            return View(reacts);
         }
 
         [HttpGet]
