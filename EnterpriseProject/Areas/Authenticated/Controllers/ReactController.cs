@@ -10,8 +10,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-
-
 namespace EnterpriseProject.Areas.Authenticated.Controllers
 {
     [Area(SD.Authenticated)]
