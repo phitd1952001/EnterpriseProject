@@ -48,6 +48,7 @@
             <td>@obj.Like</td>
             <td>@obj.DisLike</td>
             <td>
+                <a asp-controller="Comments" asp-action="Index" asp-route-ideaId="@obj.Idea.Id" class="btn btn-warning">Comments</a>
                 <a asp-controller="React" asp-action="Like" asp-route-ideaId="@obj.Idea.Id" class="btn btn-warning">Like</a>
                 <a asp-controller="React" asp-action="DisLike" asp-route-ideaId="@obj.Idea.Id" class="btn btn-warning">DisLike</a>
             </td>

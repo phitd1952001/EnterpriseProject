@@ -1,0 +1,61 @@
+﻿@model EnterpriseProject.ViewModels.CommentVM
+
+@{
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-6">
+        <h1>Comments Table</h1>
+    </div>
+    <div class="col-6">
+        <form class="form-inline my-2 my-lg-0 float-right">
+            <input id="myInput" class="form-control mr-sm-2" type="text" placeholder="Search">
+        </form>
+    </div>
+</div>
+<form method="post" asp-action="AddComment">
+    <input asp-for="IdeaId" class="form-control" hidden>
+    <div class="mb-3">
+        <label asp-for="Text" class="form-label"></label>
+        <input asp-for="Text" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-primary">Comment</button>
+</form>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Text</th>
+        <th scope="col">User</th>
+        <th scope="col">Datetime</th>
+    </tr>
+    </thead>
+    <tbody id="tblData">
+
+    @foreach (var obj in @Model.Comments)
+    {
+        <tr>
+            <th scope="row">@obj.Id</th>
+            <td>@obj.Text</td>
+            <td>@obj.ApplicationUser.FullName</td>
+            <td>@obj.DateTime</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@section Scripts
+{
+    <script>
+         $(document).ready(function (){
+             $("#myInput").on("keyup", function(){
+              var value = $(this).val().toLowerCase();
+             $("#tblData tr").filter(function (){
+                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+             });
+         });
+     });
+
+         </script>
+}
