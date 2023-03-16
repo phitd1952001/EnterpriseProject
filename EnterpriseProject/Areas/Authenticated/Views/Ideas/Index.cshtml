@@ -48,12 +48,12 @@
             <td>@obj.Like</td>
             <td>@obj.DisLike</td>
             <td>
-                <a asp-controller="Ideas" asp-action="Upsert" asp-route-id="@obj.Idea.Id" class="btn btn-warning">Update</a>
-                <a asp-controller="Ideas" asp-action="Download" asp-route-id="@obj.Idea.FileId" class="btn btn-primary">Download</a>
-                <a asp-controller="Ideas" asp-action="Delete" asp-route-id="@obj.Idea.Id" class="btn btn-danger">Delete</a>
-                <a asp-controller="Comments" asp-action="Index" asp-route-ideaId="@obj.Idea.Id" class="btn btn-warning">Comments</a>
-                <a asp-controller="React" asp-action="Like" asp-route-ideaId="@obj.Idea.Id" class="btn btn-warning">Like</a>
-                <a asp-controller="React" asp-action="DisLike" asp-route-ideaId="@obj.Idea.Id" class="btn btn-warning">DisLike</a>
+                <a asp-controller="Ideas" asp-action="Upsert" asp-route-id="@obj.Idea.Id" style="color: #1e7e34; font-size: 35px" class="btn-outline"><i class="fa-solid fa-pen-to-square"></i></a>
+                <a asp-controller="Ideas" asp-action="Download" asp-route-id="@obj.Idea.FileId" style="color: #4e555b; font-size: 35px" class="btn-outline"><i class="fa-solid fa-file-arrow-down"></i></a>
+                <a asp-controller="Ideas" asp-action="Delete" asp-route-id="@obj.Idea.Id" style="color: #c82333; font-size: 35px" class="btn-outline"><i class="fa-solid fa-trash-can"></i></a>
+                <a asp-controller="Comments" asp-action="Index" asp-route-ideaId="@obj.Idea.Id" style="color: #95999c; font-size: 35px" class="btn-outline"><i class="fa-regular fa-comments"></i></a>
+                <a asp-controller="React" asp-action="Like" asp-route-ideaId="@obj.Idea.Id" style="color: #1b6ec2; font-size: 35px" class="btn-outline"><i class="fa-regular fa-thumbs-up"></i></a>
+                <a asp-controller="React" asp-action="DisLike" asp-route-ideaId="@obj.Idea.Id" style="color: #1b6ec2; font-size: 35px" class="btn-outline"><i class="fa-sharp fa-regular fa-thumbs-down"></i></a>
             </td>
         </tr>
     }

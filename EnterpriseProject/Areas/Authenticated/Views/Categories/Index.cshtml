@@ -34,8 +34,8 @@
             <th scope="row">@obj.Id</th>
             <td>@obj.Name</td>
             <td>
-                <a asp-controller="Categories" asp-action="Upsert" asp-route-id="@obj.Id" class="btn btn-warning">Update</a>
-                <a asp-controller="Categories" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-danger">Delete</a>
+                <a asp-controller="Categories" asp-action="Upsert" asp-route-id="@obj.Id" style="color: #1e7e34; font-size: 35px" class="btn-outline"><i class="fa-solid fa-pen-to-square"></i></a>
+                <a asp-controller="Categories" asp-action="Delete" asp-route-id="@obj.Id" style="color: #c82333; font-size: 35px" class="btn-outline"><i class="fa-solid fa-trash-can"></i></a>
             </td>
         </tr>
     }
