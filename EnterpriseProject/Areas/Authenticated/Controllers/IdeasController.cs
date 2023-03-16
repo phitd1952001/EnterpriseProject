@@ -28,9 +28,9 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             _db = db;
         }
         // GET
-        public IActionResult Index(string searchString)
+        public IActionResult Index(string searchString, int topicId)
         {
-            var listIdea = _db.Ideas.Include(i => i.ApplicationUser)
+            var listIdea = _db.Ideas.Where(_=>_.TopicId == topicId).Include(i => i.ApplicationUser)
                 .Include(i => i.Category)
                 .Include(i => i.Topic).ToList();
             
@@ -55,7 +55,13 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                 reacts.Add(react);
             }
 
-            return View(reacts);
+            var response = new TopicsVM()
+            {
+                ReactVms = reacts,
+                Topic = _db.Topics.Find(topicId)
+            };
+            
+            return View(response);
         }
 
         [HttpGet]
@@ -120,7 +126,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                     };
                     _db.Ideas.Add(ideaCreate);
                     _db.SaveChanges();
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index), new {topicId = ideaVm.TopicId});
                 }
 
                 var idea = _db.Ideas.Find(ideaVm.Id);
@@ -154,7 +160,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                 
                 _db.Update(idea);
                 _db.SaveChanges();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new {topicId = ideaVm.TopicId});
             }
 
             ideaVm.CategoryList = categoriesSelectListItems();

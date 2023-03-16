@@ -1,19 +1,38 @@
-﻿@model IEnumerable<EnterpriseProject.ViewModels.ReactVM>
+﻿@model EnterpriseProject.ViewModels.TopicsVM
 
 @{
     Layout = "_Layout";
 }
 
+
 <div class="row">
     <div class="col-6">
         <h1>Idea Table</h1>
-      </div>
+    </div>
     <div class="col-6">
         <a asp-controller="Ideas" asp-action="Upsert" class="btn btn-success">Create New Idea</a>
         <form class="form-inline my-2 my-lg-0 float-right">
             <input id="myInput" class="form-control mr-sm-2" type="text" placeholder="Search">
         </form>
     </div>
+</div>
+<div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <td scope="col">@Model.Topic.Name</td>
+        </tr>
+        <tr>
+            <th scope="col">Deadline 1</th>
+            <td scope="col">@Model.Topic.ClosureDate</td>
+        </tr>
+        <tr>
+            <th scope="col">Deadline 2</th>
+            <td scope="col">@Model.Topic.FinalClosureDate</td>
+        </tr>
+        </thead>
+    </table>
 </div>
 <table class="table">
     <thead>
@@ -34,8 +53,8 @@
 
     <form method="get" asp-action="Index" asp-controller="Ideas">
     </form>
-    
-    @foreach (var obj in @Model)
+
+    @foreach (var obj in @Model.ReactVms)
     {
         <tr>
             <th scope="row">@obj.Idea.Id</th>
@@ -48,12 +67,24 @@
             <td>@obj.Like</td>
             <td>@obj.DisLike</td>
             <td>
-                <a asp-controller="Ideas" asp-action="Upsert" asp-route-id="@obj.Idea.Id" style="color: #1e7e34; font-size: 35px" class="btn-outline"><i class="fa-solid fa-pen-to-square"></i></a>
-                <a asp-controller="Ideas" asp-action="Download" asp-route-id="@obj.Idea.FileId" style="color: #4e555b; font-size: 35px" class="btn-outline"><i class="fa-solid fa-file-arrow-down"></i></a>
-                <a asp-controller="Ideas" asp-action="Delete" asp-route-id="@obj.Idea.Id" style="color: #c82333; font-size: 35px" class="btn-outline"><i class="fa-solid fa-trash-can"></i></a>
-                <a asp-controller="Comments" asp-action="Index" asp-route-ideaId="@obj.Idea.Id" style="color: #95999c; font-size: 35px" class="btn-outline"><i class="fa-regular fa-comments"></i></a>
-                <a asp-controller="React" asp-action="Like" asp-route-ideaId="@obj.Idea.Id" style="color: #1b6ec2; font-size: 35px" class="btn-outline"><i class="fa-regular fa-thumbs-up"></i></a>
-                <a asp-controller="React" asp-action="DisLike" asp-route-ideaId="@obj.Idea.Id" style="color: #1b6ec2; font-size: 35px" class="btn-outline"><i class="fa-sharp fa-regular fa-thumbs-down"></i></a>
+                <a asp-controller="Ideas" asp-action="Upsert" asp-route-id="@obj.Idea.Id" style="color: #1e7e34; font-size: 35px" class="btn-outline">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </a>
+                <a asp-controller="Ideas" asp-action="Download" asp-route-id="@obj.Idea.FileId" style="color: #4e555b; font-size: 35px" class="btn-outline">
+                    <i class="fa-solid fa-file-arrow-down"></i>
+                </a>
+                <a asp-controller="Ideas" asp-action="Delete" asp-route-id="@obj.Idea.Id" style="color: #c82333; font-size: 35px" class="btn-outline">
+                    <i class="fa-solid fa-trash-can"></i>
+                </a>
+                <a asp-controller="Comments" asp-action="Index" asp-route-ideaId="@obj.Idea.Id" style="color: #95999c; font-size: 35px" class="btn-outline">
+                    <i class="fa-regular fa-comments"></i>
+                </a>
+                <a asp-controller="React" asp-action="Like" asp-route-ideaId="@obj.Idea.Id" style="color: #1b6ec2; font-size: 35px" class="btn-outline">
+                    <i class="fa-regular fa-thumbs-up"></i>
+                </a>
+                <a asp-controller="React" asp-action="DisLike" asp-route-ideaId="@obj.Idea.Id" style="color: #1b6ec2; font-size: 35px" class="btn-outline">
+                    <i class="fa-sharp fa-regular fa-thumbs-down"></i>
+                </a>
             </td>
         </tr>
     }

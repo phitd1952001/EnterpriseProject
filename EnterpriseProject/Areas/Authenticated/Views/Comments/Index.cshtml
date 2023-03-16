@@ -13,6 +13,36 @@
             <input id="myInput" class="form-control mr-sm-2" type="text" placeholder="Search">
         </form>
     </div>
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Text</th>
+                <td scope="col">@Model.Idea.Text</td>
+            </tr>
+            <tr>
+                <th scope="col">File Path</th>
+                <td scope="col">@Model.Idea.FileId</td>
+            </tr>
+            <tr>
+                <th scope="col">Topic</th>
+                <td scope="col">@Model.Idea.Topic.Name</td>
+            </tr>
+            <tr>
+                <th scope="col">Category</th>
+                <td scope="col">@Model.Idea.Category.Name</td>
+            </tr>
+            <tr>
+                <th scope="col">Author</th>
+                <td scope="col">@Model.Idea.ApplicationUser.FullName</td>
+            </tr>
+            <tr>
+                <th scope="col">Views</th>
+                <td scope="col">@Model.View</td>
+            </tr>
+            </thead>
+        </table>
+    </div>
 </div>
 <form method="post" asp-action="AddComment">
     <input asp-for="IdeaId" class="form-control" hidden>

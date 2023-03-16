@@ -31,6 +31,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
+            var idea = _db.Ideas.Find(ideaId);
             var react = _db.Reacts.FirstOrDefault(i => i.UserId == claims.Value && i.IdeaId == ideaId);
             if (react == null)
             {
@@ -42,7 +43,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                 };
                 _db.Reacts.Add(newReact);
                 _db.SaveChanges();
-                return RedirectToAction("Index", "Ideas");
+                return RedirectToAction("Index", "Ideas",new {topicId = idea.TopicId});
             }
             else
             {
@@ -61,8 +62,21 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                 }
             }
             _db.Reacts.Update(react);
+            
+            var isUserViewed = _db.Views.Any(_ => _.IdeaId == ideaId && _.UserId == claims.Value);
+            if (!isUserViewed)
+            {
+                _db.Views.Add(new View()
+                {
+                    VisitTime = DateTime.Now,
+                    UserId = claims.Value,
+                    IdeaId = ideaId
+                });
+            }
+            
             _db.SaveChanges();
-            return RedirectToAction("Index", "Ideas");
+           
+            return RedirectToAction("Index", "Ideas",new {topicId = idea.TopicId});
         }
 
         [HttpGet]
@@ -71,6 +85,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
+            var idea = _db.Ideas.Find(ideaId);
             var react = _db.Reacts.FirstOrDefault(i => i.UserId == claims.Value && i.IdeaId == ideaId);
             if (react == null)
             {
@@ -82,7 +97,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                 };
                 _db.Reacts.Add(NewReact);
                 _db.SaveChanges();
-                return RedirectToAction("Index", "Ideas");
+                return RedirectToAction("Index", "Ideas",new {topicId = idea.TopicId});
             }
             else
             {
@@ -101,9 +116,20 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                 }
             }
             _db.Reacts.Update(react);
+            
+            var isUserViewed = _db.Views.Any(_ => _.IdeaId == ideaId && _.UserId == claims.Value);
+            if (!isUserViewed)
+            {
+                _db.Views.Add(new View()
+                {
+                    VisitTime = DateTime.Now,
+                    UserId = claims.Value,
+                    IdeaId = ideaId
+                });
+            }
             _db.SaveChanges();
 
-            return RedirectToAction("Index", "Ideas");
+            return RedirectToAction("Index", "Ideas",new {topicId = idea.TopicId});
         }
     }
 }

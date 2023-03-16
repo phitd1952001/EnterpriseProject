@@ -26,8 +26,23 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             var vm = new CommentVM()
             {
                 Comments = listComments,
-                IdeaId = ideaId
+                IdeaId = ideaId,
+                Idea = _db.Ideas.Where(_=>_.Id == ideaId).Include(_=>_.Topic).Include(_=>_.Category).FirstOrDefault()
             };
+            
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            var isUserViewed = _db.Views.Any(_ => _.IdeaId == ideaId && _.UserId == claims.Value);
+            if (!isUserViewed)
+            {
+                _db.Views.Add(new View()
+                {
+                    VisitTime = DateTime.Now,
+                    UserId = claims.Value,
+                    IdeaId = ideaId
+                });
+                _db.SaveChanges();
+            }
             
             return View(vm);
         }
