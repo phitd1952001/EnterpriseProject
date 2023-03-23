@@ -10,6 +10,6 @@ namespace EnterpriseProject.ViewModels
         public int IdeaId { get; set; }
         public IEnumerable<Comment> Comments { get; set; }
         public Idea Idea { get; set; }
-        public View View { get; set; }
+        public int View { get; set; }
     }
 }

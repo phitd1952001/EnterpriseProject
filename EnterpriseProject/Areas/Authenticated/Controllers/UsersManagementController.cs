@@ -86,7 +86,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-       
+
         [HttpGet]
         public async Task<IActionResult> Update(String id)
         {
@@ -112,7 +112,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             }
             return NotFound();
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> Update(UserVM userVm)
         {
@@ -141,7 +141,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             userVm.Departmentlist = DepartmentSelectListItems();
             return View(userVm);
         }
-        
+
         [NonAction]
         private IEnumerable<SelectListItem> DepartmentSelectListItems()
         {
@@ -153,7 +153,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             return Department;
         }
 
-                                                                                                                                                                        
+
         [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
@@ -165,7 +165,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             await _userManager.DeleteAsync(user);
             return RedirectToAction(nameof(Index));
         }
-        
+
         [HttpGet]
         
         public async Task<IActionResult> ConfirmEmail(string id)

@@ -21,15 +21,6 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
         // GET
         public IActionResult Index(int ideaId)
         {
-            var listComments = _db.Comments.Where(_=>_.IdeaId == ideaId).Include(u => u.ApplicationUser).ToList();
-
-            var vm = new CommentVM()
-            {
-                Comments = listComments,
-                IdeaId = ideaId,
-                Idea = _db.Ideas.Where(_=>_.Id == ideaId).Include(_=>_.Topic).Include(_=>_.Category).FirstOrDefault()
-            };
-            
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             var isUserViewed = _db.Views.Any(_ => _.IdeaId == ideaId && _.UserId == claims.Value);
@@ -44,6 +35,17 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                 _db.SaveChanges();
             }
             
+            var listComments = _db.Comments.Where(_=>_.IdeaId == ideaId).Include(u => u.ApplicationUser).ToList();
+            var view = _db.Views.Count(_ => _.IdeaId == ideaId);
+            
+            var vm = new CommentVM()
+            {
+                Comments = listComments,
+                View = view,
+                IdeaId = ideaId,
+                Idea = _db.Ideas.Where(_=>_.Id == ideaId).Include(_=>_.Topic).Include(_=>_.Category).Include(_=>_.ApplicationUser).FirstOrDefault()
+            };
+
             return View(vm);
         }
         

@@ -45,8 +45,10 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             {
                 var like = _db.Reacts.Where(_ => _.IdeaId == idea.Id).Sum(_ => _.Like);
                 var disLike = _db.Reacts.Where(_ => _.IdeaId == idea.Id).Sum(_ => _.DisLike);
+                var view = _db.Views.Count(_ => _.IdeaId == idea.Id);
                 var react = new ReactVM()
                 {
+                    View = view,
                     Idea = idea,
                     Like = like,
                     DisLike = disLike
@@ -173,7 +175,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             var ideaWantToDelete = _db.Ideas.Find(id);
             _db.Ideas.Remove(ideaWantToDelete);
             _db.SaveChanges();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new {topicId = ideaWantToDelete.TopicId});
         }
         
         [NonAction]

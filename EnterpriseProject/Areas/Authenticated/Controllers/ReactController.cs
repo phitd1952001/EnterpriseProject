@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EnterpriseProject.Areas.Authenticated.Controllers
 {
+
     [Area(SD.Authenticated)]
     [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Manager)]
     public class ReactController : Controller
@@ -33,6 +34,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
 
             var idea = _db.Ideas.Find(ideaId);
             var react = _db.Reacts.FirstOrDefault(i => i.UserId == claims.Value && i.IdeaId == ideaId);
+            var isUserViewed = _db.Views.Any(_ => _.IdeaId == ideaId && _.UserId == claims.Value);
             if (react == null)
             {
                 var newReact = new React()
@@ -42,6 +44,16 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                     IdeaId = ideaId
                 };
                 _db.Reacts.Add(newReact);
+                
+                if (!isUserViewed)
+                {
+                    _db.Views.Add(new View()
+                    {
+                        VisitTime = DateTime.Now,
+                        UserId = claims.Value,
+                        IdeaId = ideaId
+                    });
+                }
                 _db.SaveChanges();
                 return RedirectToAction("Index", "Ideas",new {topicId = idea.TopicId});
             }
@@ -63,7 +75,6 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             }
             _db.Reacts.Update(react);
             
-            var isUserViewed = _db.Views.Any(_ => _.IdeaId == ideaId && _.UserId == claims.Value);
             if (!isUserViewed)
             {
                 _db.Views.Add(new View()
@@ -87,6 +98,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
 
             var idea = _db.Ideas.Find(ideaId);
             var react = _db.Reacts.FirstOrDefault(i => i.UserId == claims.Value && i.IdeaId == ideaId);
+            var isUserViewed = _db.Views.Any(_ => _.IdeaId == ideaId && _.UserId == claims.Value);
             if (react == null)
             {
                 var NewReact = new React()
@@ -96,6 +108,15 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                     IdeaId = ideaId
                 };
                 _db.Reacts.Add(NewReact);
+                if (!isUserViewed)
+                {
+                    _db.Views.Add(new View()
+                    {
+                        VisitTime = DateTime.Now,
+                        UserId = claims.Value,
+                        IdeaId = ideaId
+                    });
+                }
                 _db.SaveChanges();
                 return RedirectToAction("Index", "Ideas",new {topicId = idea.TopicId});
             }
@@ -117,7 +138,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             }
             _db.Reacts.Update(react);
             
-            var isUserViewed = _db.Views.Any(_ => _.IdeaId == ideaId && _.UserId == claims.Value);
+          
             if (!isUserViewed)
             {
                 _db.Views.Add(new View()

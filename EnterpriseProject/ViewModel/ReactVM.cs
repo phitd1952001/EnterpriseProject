@@ -7,5 +7,6 @@ namespace EnterpriseProject.ViewModels
         public Idea Idea { get; set; }
         public int Like { get; set; }
         public int DisLike { get; set; }
+        public int View { get; set; }
     }
 }
