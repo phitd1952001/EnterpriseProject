@@ -1,0 +1,30 @@
+﻿@model IEnumerable<EnterpriseProject.ViewModels.Statistic>
+
+@{
+    Layout = "_Layout";
+}
+
+
+<div class="row">
+    <div class="col-6">
+        <h1>Statistic Table</h1>
+    </div>
+</div>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Topic Name</th>
+        <th scope="col">Count ideas</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+    @foreach (var obj in @Model)
+    {
+        <tr>
+            <td>@obj.TopicName</td>
+            <td>@obj.NumberOfIdeas</td>
+        </tr>
+    }
+    </tbody>
+</table>
