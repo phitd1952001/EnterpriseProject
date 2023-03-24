@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using EnterpriseProject.Data;
 using EnterpriseProject.Models;
 using EnterpriseProject.Utility;
-using EnterpriseProject.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace EnterpriseProject.Areas.Authenticated.Controllers
 {

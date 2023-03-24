@@ -14,7 +14,15 @@
         <span asp-validation-for="Text" class="text-danger"></span>
     </div>
     <div class="mb-3">
-        <label class="form-label">File</label>
+        @if (@Model.Id != 0)
+        {
+            <label class="form-label" hidden="hidden">File</label>
+            <p>Old File Name: @Model.FileName</p>
+        }
+        else
+        {
+            <label class="form-label">File</label>
+        }
         <input type="file" name="File" class="form-control">
     </div>
     <div class="mb-3">
@@ -28,9 +36,7 @@
         <span asp-validation-for="CategoryId" class="text-danger"></span>
     </div>
     <div class="mb-3">
-        <label asp-for="TopicId" class="form-label"></label>
-        @Html.DropDownListFor(m => m.TopicId, Model.TopicList, "Please select topic", new { @class = "form-control" })
-        <span asp-validation-for="TopicId" class="text-danger"></span>
-        </div>
+         <input asp-for="TopicId" class="form-control" hidden>
+    </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
