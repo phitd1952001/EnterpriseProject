@@ -16,5 +16,7 @@ namespace EnterpriseProject.ViewModels
         public IEnumerable<SelectListItem> CategoryList { get; set; }
         public IEnumerable<SelectListItem> TopicList { get; set; }
         public IFormFile File { get; set; }
+
+        public string FileName { get; set; }
     }
 }

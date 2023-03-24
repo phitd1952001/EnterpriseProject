@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using EnterpriseProject.Models;
 
-
 namespace EnterpriseProject.ViewModels
 {
     public class CommentVM

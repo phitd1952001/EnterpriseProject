@@ -1,4 +1,5 @@
-﻿@model IEnumerable<EnterpriseProject.Models.Topic>
+﻿@using EnterpriseProject.Utility
+@model IEnumerable<EnterpriseProject.Models.Topic>
 
 @{
     Layout = "_Layout";
@@ -31,15 +32,34 @@
     
     @foreach (var obj in @Model)
     {
-        <tr>
+        string rowClass = "";
+        if (obj.ClosureDate > DateTime.Now && obj.FinalClosureDate > DateTime.Now)
+        {
+            rowClass = "table-success";
+        }
+        else if (obj.FinalClosureDate > DateTime.Now && obj.ClosureDate < DateTime.Now)
+        {
+            rowClass = "table-warning";
+        }
+        else
+        {
+            rowClass = "table-danger";
+        }
+        <tr class="@rowClass">
             <th scope="row">@obj.Id</th>
             <td>@obj.Name</td>
             <td>@obj.ClosureDate</td>
             <td>@obj.FinalClosureDate</td>
             <td>
-                <a asp-controller="Topics" asp-action="Upsert" asp-route-id="@obj.Id" style="color: #1e7e34; font-size: 35px" class="btn-outline"><i class="fa-solid fa-pen-to-square"></i></a>
-                <a asp-controller="Topics" asp-action="Delete" asp-route-id="@obj.Id" style="color: #c82333; font-size: 35px" class="btn-outline"><i class="fa-solid fa-trash-can"></i></a>
-                <a asp-controller="Ideas" asp-action="Index" asp-route-topicId="@obj.Id" class="btn btn-warning">Details</a>
+                 @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
+                 {
+                     <a asp-controller="Topics" asp-action="Upsert" asp-route-id="@obj.Id" style="color: #1e7e34; font-size: 35px" class="btn-outline"><i class="fa-solid fa-pen-to-square"></i></a>
+                     <a asp-controller="Topics" asp-action="Delete" asp-route-id="@obj.Id" style="color: #c82333; font-size: 35px" class="btn-outline"><i class="fa-solid fa-trash-can"></i></a>
+                 }
+                 @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager) || User.IsInRole(SD.Role_Staff))
+                 {
+                     <a asp-controller="Ideas" asp-action="Index" asp-route-topicId="@obj.Id" class="btn btn-warning">Details</a>
+                 }
             </td>
         </tr>
     }

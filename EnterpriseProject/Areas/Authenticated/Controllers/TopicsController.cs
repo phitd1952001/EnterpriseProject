@@ -10,7 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace EnterpriseProject.Areas.Authenticated.Controllers
 {
     [Area(SD.Authenticated)]
-    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Manager)]
+    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Manager + "," + SD.Role_Staff + "," + SD.Role_Staff)]
+    
     public class TopicsController : Controller
     {
         private readonly ApplicationDbContext _db;

@@ -9,7 +9,6 @@ using EnterpriseProject.Models;
 using EnterpriseProject.Utility;
 using EnterpriseProject.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +17,7 @@ using File = EnterpriseProject.Models.File;
 namespace EnterpriseProject.Areas.Authenticated.Controllers
 {
     [Area(SD.Authenticated)]
-    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Manager)]
+    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Manager + "," + SD.Role_Staff)]
     public class IdeasController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -67,12 +66,12 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
         }
 
         [HttpGet]
-        public IActionResult Upsert(int? id)
+        public IActionResult Upsert(int? id, int topicId)
         {
             IdeaVM ideaVm = new IdeaVM()
             {
                 CategoryList = categoriesSelectListItems(),
-                TopicList = topicSelectListItems(),
+                TopicId = topicId
             };
             
             if (id == null)
@@ -86,6 +85,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             ideaVm.DateTime = idea.DateTime;
             ideaVm.CategoryId = idea.CategoryId;
             ideaVm.TopicId = idea.TopicId;
+            ideaVm.FileName = _db.Files.Find(idea.FileId).Name;
 
             return View(ideaVm);
         }
@@ -166,7 +166,6 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             }
 
             ideaVm.CategoryList = categoriesSelectListItems();
-            ideaVm.TopicList = topicSelectListItems();
             return View(ideaVm);
         }
 
@@ -190,18 +189,6 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             return result;
         }
 
-        [NonAction] 
-        private IEnumerable<SelectListItem> topicSelectListItems()
-        {
-            var topics = _db.Topics.ToList();
-            var result = topics.Select(i => new SelectListItem()
-            {
-                Text = i.Name,
-                Value = i.Id.ToString()
-            });
-            return result;
-        }
-        
         public async Task<IActionResult> Download(int id)
         {
             var fileModel = await _db.Files.FindAsync(id);
