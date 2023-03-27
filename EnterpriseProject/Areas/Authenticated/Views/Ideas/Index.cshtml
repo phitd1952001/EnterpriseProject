@@ -14,7 +14,7 @@
     <div class="col-6">
         @if (Model.Topic.ClosureDate > DateTime.Now)
         {
-            <a asp-controller="Ideas" asp-action="Upsert" asp-route-topicId="@Model.Topic.Id" class="btn btn-success">Create New Idea</a>
+            <a asp-controller="Ideas" asp-action="Upsert" asp-route-topicId="@Model.Topic.Id" class="btn btn-success"><i class="fas fa-plus"></i> &nbsp;Create New Idea</a>
         }
         <form class="form-inline my-2 my-lg-0 float-right">
             <input id="myInput" class="form-control mr-sm-2" type="text" placeholder="Search">
@@ -76,10 +76,10 @@
             <td>
                 @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
                 {
-                    <a asp-controller="Ideas" asp-action="Upsert" asp-route-id="@obj.Idea.Id" asp-route-topicId="@Model.Topic.Id" style="color: #1e7e34; font-size: 35px" class="btn-outline">
+                    <a asp-controller="Ideas" asp-action="Upsert" asp-route-id="@obj.Idea.Id" asp-route-topicId="@Model.Topic.Id" style="color: #1e7e34; font-size: 25px" class="btn-outline">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </a>
-                    <a asp-controller="Ideas" asp-action="Delete" asp-route-id="@obj.Idea.Id" style="color: #c82333; font-size: 35px" class="btn-outline">
+                    <a asp-controller="Ideas" asp-action="Delete" asp-route-id="@obj.Idea.Id" style="color: #c82333; font-size: 25px" class="btn-outline">
                         <i class="fa-solid fa-trash-can"></i>
                     </a>
                 }
@@ -87,17 +87,17 @@
                 {
                     if (obj.Idea.Topic.ClosureDate > DateTime.Now && obj.Idea.Topic.FinalClosureDate > DateTime.Now)
                     {
-                        <a asp-controller="Comments" asp-action="Index" asp-route-ideaId="@obj.Idea.Id" style="color: #95999c; font-size: 35px" class="btn-outline">
-                            <i class="fa-regular fa-comments"></i>
-                        </a>
-                        <a asp-controller="Ideas" asp-action="Download" asp-route-id="@obj.Idea.FileId" style="color: #4e555b; font-size: 35px" class="btn-outline">
-                            <i class="fa-solid fa-file-arrow-down"></i>
-                        </a>
-                        <a asp-controller="React" asp-action="Like" asp-route-ideaId="@obj.Idea.Id" style="color: #1b6ec2; font-size: 35px" class="btn-outline">
+                        <a asp-controller="React" asp-action="Like" asp-route-ideaId="@obj.Idea.Id" style="color: #1b6ec2; font-size: 25px" class="btn-outline">
                             <i class="fa-regular fa-thumbs-up"></i>
                         </a>
-                        <a asp-controller="React" asp-action="DisLike" asp-route-ideaId="@obj.Idea.Id" style="color: #1b6ec2; font-size: 35px" class="btn-outline">
+                        <a asp-controller="React" asp-action="DisLike" asp-route-ideaId="@obj.Idea.Id" style="color: #1b6ec2; font-size: 25px" class="btn-outline">
                             <i class="fa-sharp fa-regular fa-thumbs-down"></i>
+                        </a>
+                        <a asp-controller="Comments" asp-action="Index" asp-route-ideaId="@obj.Idea.Id" style="color: #95999c; font-size: 25px" class="btn-outline">
+                            <i class="fa-regular fa-comments"></i>
+                        </a>
+                        <a asp-controller="Ideas" asp-action="Download" asp-route-id="@obj.Idea.FileId" style="color: #4e555b; font-size: 25px" class="btn-outline">
+                            <i class="fa-solid fa-file-arrow-down"></i>
                         </a>
                     }
                 }

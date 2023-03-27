@@ -31,7 +31,7 @@
                                      <li>
                                          <a class="dropdown-item" asp-area="Authenticated" asp-controller="Department" asp-action="index">Department</a>
                                      </li>
-                                    <li>
+                                     <li>
                                          <a class="dropdown-item" asp-area="Authenticated" asp-controller="Categories" asp-action="index">Category</a>
                                      </li>
                                      <li>
@@ -39,6 +39,7 @@
                                      </li>
                                  </ul>
                              </div>
+                             
                          </li>
                      }
                      @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager) || User.IsInRole(SD.Role_Staff))
@@ -46,7 +47,10 @@
                          <li class="nav-item">
                              <a class="nav-link text-dark" asp-area="Authenticated" asp-controller="Topics" asp-action="index">Topics</a>
                          </li>
-                         <li>
+                     }
+                     @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
+                     {
+                         <li class="nav-item">
                              <a class="nav-link text-dark" asp-area="Authenticated" asp-controller="Statistics" asp-action="index">Statistics</a>
                          </li>
                      }

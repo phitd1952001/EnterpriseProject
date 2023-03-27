@@ -3,12 +3,14 @@ using System.Linq;
 using EnterpriseProject.Data;
 using EnterpriseProject.Utility;
 using EnterpriseProject.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace EnterpriseProject.Areas.Authenticated.Controllers
 {
     [Area(SD.Authenticated)]
+    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Manager)]
     public class StatisticsController : Controller
     {
         private readonly ApplicationDbContext _db;
