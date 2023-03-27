@@ -6,7 +6,6 @@ using System.Linq;
 using EnterpriseProject.Data;
 using EnterpriseProject.Models;
 using EnterpriseProject.Utility;
-using EnterpriseProject.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -83,7 +82,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             var zipFile = _db.Files.Where(f => fileIds.Contains(f.Id)).ToList();
 
             // Create a temporary directory to store the files
-            var tempDirectory = Path.Combine(Path.GetTempPath(), "DownloadFiles");
+            var tempDirectory = Path.Combine(Path.GetTempPath(), _db.Topics.Find(topicId).Name);
             if (Directory.Exists(tempDirectory))
             {
                 Directory.Delete(tempDirectory, true);
@@ -101,7 +100,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             }
 
             // Create a zip archive and add each file to it
-            var zipFilePath = Path.Combine(tempDirectory, "Files.zip");
+            var zipFilePath = Path.Combine(tempDirectory, _db.Topics.Find(topicId).Name);//_db.Topics.Find(topicId).Name copy cái tên topic
             if (Directory.Exists(zipFilePath))
             {
                 Directory.Delete(zipFilePath, true);
@@ -120,7 +119,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
 
             // Set the content type and headers for the response
             var contentType = "application/zip";
-            var contentDisposition = "attachment; filename=Files.zip";
+            var contentDisposition = "attachment; filename="+ _db.Topics.Find(topicId).Name+".zip";
             Response.Headers.Add("Content-Disposition", contentDisposition);
 
             // Download the zip file
@@ -171,7 +170,6 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                     index++;
                 }
                 
-
                 // Auto-fit the columns to the content
                 worksheet.Cells.AutoFitColumns();
 
@@ -179,9 +177,9 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                 var fileContents = package.GetAsByteArray();
 
                 // Set the file name and content type for the Excel file
-                var fileName = "my_excel_file.xlsx";
+                var fileName = _db.Topics.Find(topicId).Name +".xlsx";
                 var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-
+                
                 // Return the Excel file as a FileResult
                 return File(fileContents, contentType, fileName);
             }

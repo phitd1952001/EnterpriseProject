@@ -15,48 +15,52 @@
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container">
             <a class="navbar-brand" asp-area="UnAuthenticated" asp-controller="Home" asp-action="Index">EnterpriseProject</a>
-            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
-                     @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
-                     {
-                         <li class="nav-item dropdown">
-                             <a class="nav-link dropdown-toggle" asp-area="UnAuthenticated" asp-controller="Home" asp-action="Index" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                 Home
-                             </a>
-                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                 <ul class="list-unstyled">
-                                     <li>
-                                         <a class="dropdown-item" asp-area="Authenticated" asp-controller="UsersManagement" asp-action="index">UsersManagement</a>
-                                     </li>
-                                     <li>
-                                         <a class="dropdown-item" asp-area="Authenticated" asp-controller="Department" asp-action="index">Department</a>
-                                     </li>
-                                     <li>
-                                         <a class="dropdown-item" asp-area="Authenticated" asp-controller="Categories" asp-action="index">Category</a>
-                                     </li>
-                                     <li>
-                                         <a class="dropdown-item" asp-area="Authenticated" asp-controller="Topics" asp-action="index">Topics</a>
-                                     </li>
-                                 </ul>
-                             </div>
+                    @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" asp-area="UnAuthenticated" asp-controller="Home" asp-action="Index" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Home
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <a class="dropdown-item" asp-area="Authenticated" asp-controller="UsersManagement" asp-action="index">UsersManagement</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="Authenticated" asp-controller="Department" asp-action="index">Department</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="Authenticated" asp-controller="Categories" asp-action="index">Category</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="Authenticated" asp-controller="Topics" asp-action="index">Topics</a>
+                                    </li>
+                                </ul>
+                            </div>
                              
-                         </li>
-                     }
-                     @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager) || User.IsInRole(SD.Role_Staff))
-                     {
-                         <li class="nav-item">
-                             <a class="nav-link text-dark" asp-area="Authenticated" asp-controller="Topics" asp-action="index">Topics</a>
-                         </li>
-                     }
-                     @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
-                     {
-                         <li class="nav-item">
-                             <a class="nav-link text-dark" asp-area="Authenticated" asp-controller="Statistics" asp-action="index">Statistics</a>
-                         </li>
-                     }
+                        </li>
+                    }
+                    @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager) || User.IsInRole(SD.Role_Staff))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Authenticated" asp-controller="Topics" asp-action="index">Topics</a>
+                        </li>
+                    }
+                    @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Authenticated" asp-controller="Statistics" asp-action="index">Statistics</a>
+                        </li>
+                    }
                 </ul>
+                <partial name="_LoginPartial"/>
             </div>
-            <partial name="_LoginPartial"/>
         </div >
     </nav>
 </header>
