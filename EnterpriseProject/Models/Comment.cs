@@ -10,7 +10,6 @@ namespace EnterpriseProject.Models
         public string Text { get; set; }
         public DateTime DateTime { get; set; }
         [Required] public int IdeaId { get; set; }
-        [ForeignKey("IdeaId")] public Idea Idea { get; set; }
         [Required] public string UserId { get; set; }
         [ForeignKey("UserId")] public ApplicationUser ApplicationUser { get; set; }
         

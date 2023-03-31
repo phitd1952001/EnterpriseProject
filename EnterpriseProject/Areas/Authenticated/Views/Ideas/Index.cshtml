@@ -39,6 +39,11 @@
         </thead>
     </table>
 </div>
+<div>
+    <a asp-controller="Topics" asp-action="Index" class="btn btn-success">
+        Back List
+    </a>
+</div>
 <table class="table">
     <thead>
     <tr>
@@ -69,7 +74,14 @@
             <td>@obj.Idea.DateTime</td>
             <td>@obj.Idea.Category.Name</td>
             <td>@obj.Idea.Topic.Name</td>
-            <td>@obj.Idea.ApplicationUser.FullName</td>
+            @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
+            {
+                <td>@obj.Idea.ApplicationUser.FullName</td>
+            }
+            else
+            {
+                <td>anynomous</td>
+            }
             <td>@obj.View</td>
             <td>@obj.Like</td>
             <td>@obj.DisLike</td>

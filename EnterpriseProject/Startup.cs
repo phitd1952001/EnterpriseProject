@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using EnterpriseProject.Data;
 using EnterpriseProject.DbInitializer;
+using EnterpriseProjectSendMailService;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -47,6 +48,13 @@ namespace EnterpriseProject
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
+            
+            // map ping mailsettings trong apsettings.js với class mailsettings
+            services.AddOptions (); // Kích hoạt Options
+            var mailsettings = Configuration.GetSection ("MailSettings"); // đọc config
+            services.Configure<MailSettings> (mailsettings);
+            
+            services.AddTransient<ISendMailService, SendMailService.SendMailService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
