@@ -9,6 +9,8 @@ using EnterpriseProject.Models;
 using EnterpriseProject.Utility;
 using EnterpriseProject.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -21,10 +23,14 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
     public class IdeasController : Controller
     {
         private readonly ApplicationDbContext _db;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly ISendMailService _emailSender;
 
-        public IdeasController(ApplicationDbContext db)
+        public IdeasController(ApplicationDbContext db,UserManager<IdentityUser> userManager, ISendMailService emailSender)
         {
             _db = db;
+            _userManager = userManager;
+            _emailSender = emailSender;
         }
         // GET
         public IActionResult Index(string searchString, int topicId)
@@ -100,6 +106,19 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
 
                 if (ideaVm.Id == 0)
                 {
+                    var currentUser = _db.ApplicationUsers.FirstOrDefault(i => i.Id == claims.Value);
+                    var userList = _db.ApplicationUsers.Where(_ => _.DepartmentId == currentUser.DepartmentId).ToList();
+                    ApplicationUser qaCoordinator = new ApplicationUser();
+                    foreach (var user in userList)
+                    {
+                        var roleTemp = await _userManager.GetRolesAsync(user);
+                        if (roleTemp.First() == SD.Role_Coordinator)
+                        {
+                            qaCoordinator = user;
+                            break;
+                        }
+                    }
+                    
                     if (ideaVm.File == null || ideaVm.File.Length == 0)
                         return BadRequest("No file selected");
 
@@ -128,6 +147,14 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                     };
                     _db.Ideas.Add(ideaCreate);
                     _db.SaveChanges();
+
+                    if (qaCoordinator != null && qaCoordinator.Email != null)
+                    {
+                        await _emailSender
+                            .SendEmailAsync(qaCoordinator.Email, "New Idea Is Added",
+                                "<h1>New Idea Is Added</h1>");
+                    }
+                    
                     return RedirectToAction(nameof(Index), new {topicId = ideaVm.TopicId});
                 }
 
@@ -137,6 +164,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                 idea.CategoryId = ideaVm.CategoryId;
                 idea.TopicId = ideaVm.TopicId;
                 idea.UserId = claims.Value;
+                
 
                 if (ideaVm.File != null && ideaVm.File.Length != 0)
                 {

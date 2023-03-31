@@ -1,4 +1,5 @@
-﻿@model EnterpriseProject.ViewModels.CommentVM
+﻿@using EnterpriseProject.Utility
+@model EnterpriseProject.ViewModels.CommentVM
 
 @{
     Layout = "_Layout";
@@ -68,7 +69,14 @@
         <tr>
             <th scope="row">@obj.Id</th>
             <td>@obj.Text</td>
-            <td>@obj.ApplicationUser.FullName</td>
+            @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
+            {
+                <td>@obj.ApplicationUser.FullName</td>
+            }
+            else
+            {
+                <td>anynomous</td>
+            }
             <td>@obj.DateTime</td>
         </tr>
     }

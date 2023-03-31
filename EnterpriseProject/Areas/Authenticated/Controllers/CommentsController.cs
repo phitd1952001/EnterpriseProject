@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using EnterpriseProject.Data;
 using EnterpriseProject.Models;
 using EnterpriseProject.Utility;
@@ -15,10 +16,12 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
     public class CommentsController : Controller
     {
         private readonly ApplicationDbContext _db;
+        private readonly ISendMailService _emailSender;
 
-        public CommentsController(ApplicationDbContext db)
+        public CommentsController(ApplicationDbContext db, ISendMailService emailSender)
         {
             _db = db;
+            _emailSender = emailSender;
         }
         // GET
         public IActionResult Index(int ideaId)
@@ -52,7 +55,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
         }
         
         [HttpPost]
-        public IActionResult AddComment(CommentVM commentVm)
+        public async Task<IActionResult> AddComment(CommentVM commentVm)
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
@@ -67,7 +70,15 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
 
             _db.Comments.Add(comment);
             _db.SaveChanges();
-            
+
+            var idea = _db.Ideas.FirstOrDefault(_ => _.Id == commentVm.IdeaId);
+            var userOwnerIdea = _db.ApplicationUsers.Find(idea.UserId);
+            if (userOwnerIdea != null && userOwnerIdea.Email != null)
+            {
+                await _emailSender
+                    .SendEmailAsync(userOwnerIdea.Email, "New Comment for your idea",
+                        "<h1>New Comment for your idea</h1>");
+            }
             return RedirectToAction(nameof(Index), new {ideaId = commentVm.IdeaId});
         }
     }
