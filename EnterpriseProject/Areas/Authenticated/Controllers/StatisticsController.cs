@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using EnterpriseProject.Data;
+using EnterpriseProject.Models;
 using EnterpriseProject.Utility;
 using EnterpriseProject.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -22,18 +24,42 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
         // GET
         public IActionResult Index()
         {
-            var topics = _db.Topics.ToList();
+            var ideas = _db.Ideas.ToList();
+            var userIds = ideas.Select(_ => _.UserId);
+            var users = _db.ApplicationUsers.Where(_ => userIds.Contains(_.Id)).ToList();
+            var departmentIds = users.Select(_ => _.DepartmentId).ToList();
+            var departments = _db.Departments.Where(_ => departmentIds.Contains(_.Id)).ToList();
+
             var statistics = new List<Statistic>();
-            foreach (var topic in topics)
+            foreach (var department in departments)
             {
-                var numberOfIdeas = _db.Ideas.Count(_ => _.TopicId == topic.Id);
+                var usersInDepartments = users.Where(_ => _.DepartmentId == department.Id).ToList();
+                var userIdsInDepartments = usersInDepartments.Select(_ => _.Id).ToList();
+                var numberOfIdeas = ideas.Count(_ => userIdsInDepartments.Contains(_.UserId));
                 var statistic = new Statistic()
                 {
-                    TopicName = topic.Name,
+                    DepartmentName = department.Name,
                     NumberOfIdeas = numberOfIdeas
                 };
+                
                 statistics.Add(statistic);
             }
+
+            var departmentNoIdeas = _db.Departments.Where(_ => !departmentIds.Contains(_.Id));
+            if (departmentNoIdeas.Any())
+            {
+                foreach (var department in departmentNoIdeas)
+                {
+                    var statistic = new Statistic()
+                    {
+                        DepartmentName = department.Name,
+                        NumberOfIdeas = 0
+                    };
+                
+                    statistics.Add(statistic);
+                }
+            }
+            
             return View(statistics);
         }
     }

@@ -13,7 +13,7 @@
 <table class="table">
     <thead>
     <tr>
-        <th scope="col">Topic Name</th>
+        <th scope="col">Department Name</th>
         <th scope="col">Count ideas</th>
     </tr>
     </thead>
@@ -22,7 +22,7 @@
     @foreach (var obj in @Model)
     {
         <tr>
-            <td>@obj.TopicName</td>
+            <td>@obj.DepartmentName</td>
             <td>@obj.NumberOfIdeas</td>
         </tr>
     }
