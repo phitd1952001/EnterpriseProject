@@ -6,10 +6,13 @@ using System.Linq;
 using EnterpriseProject.Data;
 using EnterpriseProject.Models;
 using EnterpriseProject.Utility;
+using EnterpriseProject.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
+using CompressionLevel = System.IO.Compression.CompressionLevel;
+using File = EnterpriseProject.Models.File;
 
 namespace EnterpriseProject.Areas.Authenticated.Controllers
 {
@@ -76,53 +79,77 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
         
         public ActionResult DownloadZipFile(int topicId)
         {
+            // Lấy tất cả các ý tưởng liên quan đến chủ đề theo id của chủ đề
             var ideas = _db.Ideas.Where(_ => _.TopicId == topicId);
+
+            // Lấy danh sách Id của tất cả các tệp đính kèm trong các ý tưởng
             var fileIds = ideas.Select(_ => _.FileId).ToList();
-            // retrieve zip file from database
+            
+            // Lấy tất cả các tệp đính kèm từ database dựa trên danh sách Id của chúng
             var zipFile = _db.Files.Where(f => fileIds.Contains(f.Id)).ToList();
 
-            // Create a temporary directory to store the files
+            // Tạo một thư mục tạm để lưu trữ các tệp
             var tempDirectory = Path.Combine(Path.GetTempPath(), _db.Topics.Find(topicId).Name);
+            //var tempDirectory = Path.Combine("E:", _db.Topics.Find(topicId).Name);
+            
+            
+            // Nếu thư mục đã tồn tại, xóa nó
             if (Directory.Exists(tempDirectory))
             {
                 Directory.Delete(tempDirectory, true);
             }
             Directory.CreateDirectory(tempDirectory);
 
-            // Save each file to the temporary directory
+            // Tạo thư mục mới để lưu trữ các tệp
             foreach (var file in zipFile)
             {
-                var filePath = Path.Combine(tempDirectory, file.Name);
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                var ideaId = _db.Ideas.Where(i => i.FileId == file.Id).FirstOrDefault().Id.ToString();
+                var filePath = Path.Combine(tempDirectory, ideaId);
+                // Nếu thư mục đã tồn tại, xóa nó
+                if (Directory.Exists(filePath))
+                {
+                    Directory.Delete(filePath, true);
+                }
+                Directory.CreateDirectory(filePath);
+                using (var fileStream = new FileStream(Path.Combine(filePath, file.Name), FileMode.Create))
                 {
                     fileStream.Write(file.Data, 0, file.Data.Length);
                 }
             }
 
-            // Create a zip archive and add each file to it
-            var zipFilePath = Path.Combine(tempDirectory, _db.Topics.Find(topicId).Name);//_db.Topics.Find(topicId).Name copy cái tên topic
-            if (Directory.Exists(zipFilePath))
+            // Tạo một tệp nén và thêm các tệp vào đó
+            var zipFilePath = Path.Combine(Path.GetTempPath(), _db.Topics.Find(topicId).Name + ".zip");//_db.Topics.Find(topicId).Name copy cái tên topic
+            //if (Directory.Exists(zipFilePath))
+            //{
+            //    Directory.Delete(zipFilePath, true);
+            //}
+            // Tạo một tệp zip mới
+            //using (var zipArchive = ZipFile.Open(tempDirectory, ZipArchiveMode.Create))
+            if (System.IO.File.Exists(zipFilePath))
             {
-                Directory.Delete(zipFilePath, true);
+                System.IO.File.Delete(zipFilePath);
             }
-            using (var zipArchive = ZipFile.Open(zipFilePath, ZipArchiveMode.Create))
+            
+            ZipFile.CreateFromDirectory(tempDirectory, zipFilePath);
+            
             {
-                foreach (var file in zipFile)
-                {
-                    var fileEntry = zipArchive.CreateEntry(file.Name);
-                    using (var entryStream = fileEntry.Open())
-                    {
-                        entryStream.Write(file.Data, 0, file.Data.Length);
-                    }
-                }
+                // Thêm từng tệp vào tệp nén
+                //foreach (var file in zipFile)
+                //{
+                //    var fileEntry = zipArchive.CreateEntry(file.Name);
+                //    using (var entryStream = fileEntry.Open())
+                //    {
+                //        entryStream.Write(file.Data, 0, file.Data.Length);
+                //    }
+                //}
             }
 
-            // Set the content type and headers for the response
+            // Thiết lập loại nội dung và tiêu đề cho phản hồi
             var contentType = "application/zip";
             var contentDisposition = "attachment; filename="+ _db.Topics.Find(topicId).Name+".zip";
             Response.Headers.Add("Content-Disposition", contentDisposition);
 
-            // Download the zip file
+            // Tải tệp zip
             return PhysicalFile(zipFilePath, contentType);
         }
         
@@ -184,5 +211,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                 return File(fileContents, contentType, fileName);
             }
         }
+
     }
-}
+        
+    }

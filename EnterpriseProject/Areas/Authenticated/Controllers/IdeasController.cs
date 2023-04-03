@@ -106,6 +106,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
 
                 if (ideaVm.Id == 0)
                 {
+                    // SendEmail to QA coordinator
                     var currentUser = _db.ApplicationUsers.FirstOrDefault(i => i.Id == claims.Value);
                     var userList = _db.ApplicationUsers.Where(_ => _.DepartmentId == currentUser.DepartmentId).ToList();
                     ApplicationUser qaCoordinator = new ApplicationUser();
@@ -119,6 +120,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                         }
                     }
                     
+                    // add file
                     if (ideaVm.File == null || ideaVm.File.Length == 0)
                         return BadRequest("No file selected");
 
@@ -136,6 +138,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                     _db.Files.Add(fileModel);
                     _db.SaveChanges();
                     
+                    // create idea
                     var ideaCreate = new Idea()
                     {
                         Text = ideaVm.Text,
@@ -148,11 +151,12 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                     _db.Ideas.Add(ideaCreate);
                     _db.SaveChanges();
 
+                    //check idea được add thành công hay không và send mail to coordinator
                     if (qaCoordinator != null && qaCoordinator.Email != null)
                     {
                         await _emailSender
-                            .SendEmailAsync(qaCoordinator.Email, "New Idea Is Added",
-                                "<h1>New Idea Is Added</h1>");
+                            .SendEmailAsync(qaCoordinator.Email, "New Idea Is Added", 
+                                $"<h1>New Idea Is Added</h1>");
                     }
                     
                     return RedirectToAction(nameof(Index), new {topicId = ideaVm.TopicId});

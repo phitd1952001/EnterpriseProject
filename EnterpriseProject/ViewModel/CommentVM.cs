@@ -9,6 +9,7 @@ namespace EnterpriseProject.ViewModels
         public int IdeaId { get; set; }
         public IEnumerable<Comment> Comments { get; set; }
         public Idea Idea { get; set; }
+        public string FileName { get; set; }
         public int View { get; set; }
     }
 }

@@ -1,4 +1,15 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+	Layout = "_Layout";
 }
 
+<div>
+    <link rel="stylesheet" href="~/css/home.css" />
+    <div class="fullscreen-image">
+        <img src="~/images/gr1.jpg"/>
+        <div class="overlay-text">
+            <h1>Welcome to the Idea website</h1>
+            <a class="btn btn-outline-light border-0" asp-area="Authenticated" asp-controller="Topics" asp-action="index">Access to topics</a>
+        </div>
+    </div>
+</div>

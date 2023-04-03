@@ -1,0 +1,53 @@
+﻿.fullscreen-image {
+  position: relative;
+  width: 100%;
+  height: 80vh;
+  overflow: hidden;
+}
+
+.fullscreen-image img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: -1;
+}
+
+.overlay-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  margin-top: -80px;
+  color: #fff;
+}
+
+.overlay-text h1 {
+  font-size: 1.65rem;
+  margin-bottom: 1rem;
+}
+
+.overlay-text p {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.overlay-text button {
+  font-size: 2rem;
+  padding: .5rem 2rem;
+  background-color: #fff;
+  color: #000;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.overlay-text button:hover {
+  background-color: #333;
+  color: #fff;
+}

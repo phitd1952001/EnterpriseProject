@@ -64,6 +64,7 @@
                  @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager) || User.IsInRole(SD.Role_Staff))
                  {
                      <a asp-controller="Ideas" asp-action="Index" asp-route-topicId="@obj.Id" class="btn btn-warning">Details</a>
+                     
                  }
             </td>
         </tr>

@@ -35,7 +35,13 @@
             </tr>
             <tr>
                 <th scope="col">Author</th>
-                <td scope="col">@Model.Idea.ApplicationUser.FullName</td>
+                @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager)){
+                    <td>@Model.Idea.ApplicationUser.FullName</td>
+                }
+                else
+                {
+                    <td>anynomous</td>
+                }
             </tr>
             <tr>
                 <th scope="col">Views</th>
@@ -52,6 +58,7 @@
         <input asp-for="Text" class="form-control">
     </div>
     <button type="submit" class="btn btn-primary">Comment</button>
+    <button type="button" onclick="goBack()" class="btn btn-success">Back</button>
 </form>
 <table class="table">
     <thead>
@@ -68,7 +75,6 @@
     {
         <tr>
             <th scope="row">@obj.Id</th>
-            <td>@obj.Text</td>
             @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
             {
                 <td>@obj.ApplicationUser.FullName</td>
@@ -77,6 +83,7 @@
             {
                 <td>anynomous</td>
             }
+            <td>@obj.Text</td>
             <td>@obj.DateTime</td>
         </tr>
     }
@@ -94,6 +101,8 @@
              });
          });
      });
-
-         </script>
+     function goBack(){
+         window.history.back();
+     }  
+  </script>
 }

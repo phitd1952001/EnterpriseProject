@@ -24,27 +24,33 @@ namespace EnterpriseProject
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Đăng ký AppDbContext, sử dụng kết nối đến MS SQL Server
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
-
+            
+            // Đăng ký các dịch vụ của Identity
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             
             services.AddControllersWithViews();
+            // Đăng ký Seed Date
             services.AddScoped<IDbInitializer, DbInitializer.DbInitializer>();
 
+            // Cấu hình Cookie
             services.ConfigureApplicationCookie(options =>
             {
-                options.LoginPath = $"/Identity/Account/Login";
+                options.LoginPath = $"/Identity/Account/Login"; // Url đến trang đăng nhập
                 options.LogoutPath = $"/Identity/Account/Logout";
-                options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+                options.AccessDeniedPath = $"/Identity/Account/AccessDenied"; // Trang khi User bị cấm truy cập
             });
+           
+            // Đăng ký dịch vụ Session
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.IdleTimeout = TimeSpan.FromMinutes(30); // Thời gian tồn tại của Session
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
@@ -52,8 +58,9 @@ namespace EnterpriseProject
             // map ping mailsettings trong apsettings.js với class mailsettings
             services.AddOptions (); // Kích hoạt Options
             var mailsettings = Configuration.GetSection ("MailSettings"); // đọc config
-            services.Configure<MailSettings> (mailsettings);
-            
+            services.Configure<MailSettings> (mailsettings); // đăng ký để Inject
+            // Đăng ký SendMailService với kiểu Transient, mỗi lần gọi dịch
+            // vụ ISendMailService một đới tượng SendMailService tạo ra (đã inject config)
             services.AddTransient<ISendMailService, SendMailService.SendMailService>();
         }
 
@@ -76,19 +83,19 @@ namespace EnterpriseProject
             app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseSession();
+            app.UseSession(); // Đăng ký Middleware Session vào Pipeline
 
-            app.UseAuthentication();
-            app.UseAuthorization();
+            app.UseAuthentication(); // bắt buộc đăng nhập thông tin (xác thực)
+            app.UseAuthorization(); // phân quyền của User
             
-            dbInitializer.Initialize();
+            dbInitializer.Initialize(); 
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "default",
+                    name: "default", // đặt tên route
                     pattern: "{area=UnAuthenticated}/{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
+                endpoints.MapRazorPages(); // Đến Razor Page  
             });
         }
     }

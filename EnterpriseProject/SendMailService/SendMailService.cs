@@ -8,6 +8,7 @@ using MimeKit;
 
 namespace EnterpriseProject.SendMailService
 {
+    // Dịch vụ gửi mail
     public class SendMailService : ISendMailService
     {
         private readonly MailSettings mailSettings;
