@@ -53,6 +53,32 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             return View(vm);
         }
         
+        [HttpGet]
+        public IActionResult UpDate(int? id)
+        {
+            var findComment = _db.Comments.Find(id);
+            return View(findComment);
+        }
+        
+        [HttpPost]
+        public IActionResult UpDate(Comment comment)
+        {
+            var findComment = _db.Comments.Find(comment.Id);
+            findComment.Text = comment.Text;
+            findComment.DateTime = DateTime.Now;
+            _db.Comments.Update(findComment);
+            _db.SaveChanges();
+            return RedirectToAction(nameof(Index), new {ideaId = findComment.IdeaId});
+        }
+        
+        public IActionResult Delete(int id)
+        {
+            var deleteComment = _db.Comments.Find(id);
+            _db.Remove(deleteComment);
+            _db.SaveChanges();
+            return RedirectToAction(nameof(Index), new { ideaId = deleteComment.IdeaId});
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddComment(CommentVM commentVm)
         {

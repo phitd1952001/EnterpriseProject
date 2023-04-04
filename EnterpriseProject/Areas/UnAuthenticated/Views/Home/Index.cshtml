@@ -1,15 +1,15 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
-	Layout = "_Layout";
+	Layout = "_Layout-home";
 }
 
 <div>
     <link rel="stylesheet" href="~/css/home.css" />
     <div class="fullscreen-image">
-        <img src="~/images/gr1.jpg"/>
+        <img src="~/images/image1-6.png"/>
         <div class="overlay-text">
-            <h1>Welcome to the Idea website</h1>
-            <a class="btn btn-outline-light border-0" asp-area="Authenticated" asp-controller="Topics" asp-action="index">Access to topics</a>
+            <h1 class="text-dark">Welcome to the Idea website</h1>
+            <a class="btn btn-outline-light border-0 text-dark" asp-area="Authenticated" asp-controller="Topics" asp-action="index"><i class="fa-sharp fa-solid fa-forward-fast"> Access To Topics</i></a>
         </div>
     </div>
 </div>

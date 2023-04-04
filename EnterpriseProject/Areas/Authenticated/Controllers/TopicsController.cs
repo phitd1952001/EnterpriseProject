@@ -119,30 +119,12 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
 
             // Tạo một tệp nén và thêm các tệp vào đó
             var zipFilePath = Path.Combine(Path.GetTempPath(), _db.Topics.Find(topicId).Name + ".zip");//_db.Topics.Find(topicId).Name copy cái tên topic
-            //if (Directory.Exists(zipFilePath))
-            //{
-            //    Directory.Delete(zipFilePath, true);
-            //}
-            // Tạo một tệp zip mới
-            //using (var zipArchive = ZipFile.Open(tempDirectory, ZipArchiveMode.Create))
             if (System.IO.File.Exists(zipFilePath))
             {
                 System.IO.File.Delete(zipFilePath);
             }
             
             ZipFile.CreateFromDirectory(tempDirectory, zipFilePath);
-            
-            {
-                // Thêm từng tệp vào tệp nén
-                //foreach (var file in zipFile)
-                //{
-                //    var fileEntry = zipArchive.CreateEntry(file.Name);
-                //    using (var entryStream = fileEntry.Open())
-                //    {
-                //        entryStream.Write(file.Data, 0, file.Data.Length);
-                //    }
-                //}
-            }
 
             // Thiết lập loại nội dung và tiêu đề cho phản hồi
             var contentType = "application/zip";

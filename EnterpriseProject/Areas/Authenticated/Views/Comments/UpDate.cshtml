@@ -1,0 +1,17 @@
+﻿@model EnterpriseProject.Models.Comment
+
+@{
+    Layout = "_Layout";
+}
+
+<h1>Update Comment</h1>
+<form method="post">
+    <input asp-for="Id" class="form-control" hidden>
+    <div class="mb-3">
+        <label asp-for="Text" class="form-label"></label>
+        <input asp-for="Text" class="form-control">
+        <span asp-validation-for="Text" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
