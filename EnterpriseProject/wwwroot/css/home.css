@@ -21,7 +21,7 @@
 
 .overlay-text {
   position: absolute;
-  top: 50%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
@@ -31,11 +31,12 @@
 .overlay-text h1 {
   font-size: 1.65rem;
   margin-bottom: 1rem;
+  color: black;
 }
 
 .overlay-text p {
   font-size: 2rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .overlay-text button {
