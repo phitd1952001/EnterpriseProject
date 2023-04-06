@@ -169,7 +169,7 @@ namespace EnterpriseProject.Areas.Identity.Pages.Account
         {
             Input = new InputModel()
             {
-                RoleList = _roleManager.Roles.Where(_=>_.Name != SD.Role_Admin).Where(_=>_.Name != SD.Role_Manager).Select(x => x.Name).Select(i => new SelectListItem()
+                RoleList = _roleManager.Roles.Where(_=>_.Name != SD.Role_Admin).Where(_=>_.Name != SD.Role_Manager).Where(_=>_.Name != SD.Role_Coordinator).Select(x => x.Name).Select(i => new SelectListItem()
                 {
                     Text = i,
                     Value = i
