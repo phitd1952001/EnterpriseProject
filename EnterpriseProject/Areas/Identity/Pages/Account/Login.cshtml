@@ -4,9 +4,12 @@
 @{
     ViewData["Title"] = "Log in";
     <link rel="stylesheet" href="~/css/Login.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="~/css/site.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 }
 
-<div class="form-container">
+<div class="form-container container-fluid w-50">
     <p class="title">Login</p>
     <form class="form" id="account" method="post">
         <div asp-validation-summary="All" class="text-danger"></div>
@@ -33,7 +36,7 @@
     </form>
     <div class="social-message">
         <div class="line"></div>
-        <p class="message">Login with social accounts</p>
+        <p class="message">School communication accounts</p>
         <div class="line"></div>
     </div>
     <div class="social-icons">

@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="~/css/Register.css" />
 }
 
-<div class="card ">
+<div class="card w-50">
   <div class="card-header">
     <div class="text-header">Register</div>
   </div>
@@ -62,7 +62,7 @@
             @Html.DropDownListFor(m => m.Input.DepartmentId, Model.Input.DepartmentList, "-Please select Department", new { @class = "form-control" })
             <span asp-validation-for="Input.DepartmentId" class="text-danger"></span>
         </div>
-        <button type="submit" class="btn">Register</button>
+        <button type="submit" class="btn m-auto">Register</button>
     </form>
   </div>
 </div>

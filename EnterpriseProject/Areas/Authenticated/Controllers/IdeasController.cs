@@ -10,7 +10,6 @@ using EnterpriseProject.Utility;
 using EnterpriseProject.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +18,7 @@ using File = EnterpriseProject.Models.File;
 namespace EnterpriseProject.Areas.Authenticated.Controllers
 {
     [Area(SD.Authenticated)]
-    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Manager + "," + SD.Role_Staff)]
+    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Manager + "," + SD.Role_Staff + "," + SD.Role_Coordinator)]
     public class IdeasController : Controller
     {
         private readonly ApplicationDbContext _db;

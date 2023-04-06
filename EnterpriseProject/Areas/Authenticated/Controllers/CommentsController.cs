@@ -6,12 +6,14 @@ using EnterpriseProject.Data;
 using EnterpriseProject.Models;
 using EnterpriseProject.Utility;
 using EnterpriseProject.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace EnterpriseProject.Areas.Authenticated.Controllers
 {
     [Area(SD.Authenticated)]
+    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Manager + "," + SD.Role_Staff + "," + SD.Role_Coordinator)]
     public class CommentsController : Controller
     {
         private readonly ApplicationDbContext _db;

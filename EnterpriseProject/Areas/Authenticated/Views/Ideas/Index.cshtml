@@ -95,7 +95,7 @@
                         <i class="fa-solid fa-trash-can"></i>
                     </a>
                 }
-                @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager) || User.IsInRole(SD.Role_Staff))
+                @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager) || User.IsInRole(SD.Role_Staff) || User.IsInRole(SD.Role_Coordinator))
                 {
                     if (obj.Idea.Topic.ClosureDate > DateTime.Now && obj.Idea.Topic.FinalClosureDate > DateTime.Now)
                     {

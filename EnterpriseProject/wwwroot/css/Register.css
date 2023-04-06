@@ -58,8 +58,6 @@
   transition: background-color 0.2s ease-in-out;
   cursor: pointer;
   display: block;
-  margin-top: 1rem;
-  margin-left: 14rem;
 }
 
 .btn:hover {

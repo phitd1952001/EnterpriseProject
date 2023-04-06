@@ -54,17 +54,19 @@
             <td>@obj.ClosureDate</td>
             <td>@obj.FinalClosureDate</td>
             <td>
-                 @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
+                 @if (User.IsInRole(SD.Role_Manager))
                  {
-                     <a asp-controller="Topics" asp-action="Upsert" asp-route-id="@obj.Id" class="btn  btn-success">Update</a>
-                     <a asp-controller="Topics" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-danger">Delete</a>
                      <a asp-controller="Topics" asp-action="DownloadZipFile" asp-route-topicId="@obj.Id" class="btn btn-danger">DownloadZipFile</a>
                      <a asp-controller="Topics" asp-action="DownloadExcel" asp-route-topicId="@obj.Id" class="btn btn-danger">DownloadExcel</a>
                  }
-                 @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager) || User.IsInRole(SD.Role_Staff))
+                 @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
+                 {
+                     <a asp-controller="Topics" asp-action="Upsert" asp-route-id="@obj.Id" class="btn btn-success">Update</a>
+                     <a asp-controller="Topics" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-danger">Delete</a>
+                 }
+                 @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager) || User.IsInRole(SD.Role_Staff) || User.IsInRole(SD.Role_Coordinator))
                  {
                      <a asp-controller="Ideas" asp-action="Index" asp-route-topicId="@obj.Id" class="btn btn-warning">Details</a>
-                     
                  }
             </td>
         </tr>
