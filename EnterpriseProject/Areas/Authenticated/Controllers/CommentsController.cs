@@ -43,13 +43,17 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             
             var listComments = _db.Comments.Where(_=>_.IdeaId == ideaId).Include(u => u.ApplicationUser).ToList();
             var view = _db.Views.Count(_ => _.IdeaId == ideaId);
-            
+
+            var idea = _db.Ideas.Where(_ => _.Id == ideaId).Include(_ => _.Topic).Include(_ => _.Category)
+                .Include(_ => _.ApplicationUser).FirstOrDefault();
+
             var vm = new CommentVM()
             {
+                FileName = _db.Files.Find(idea.FileId).Name,
                 Comments = listComments,
                 View = view,
                 IdeaId = ideaId,
-                Idea = _db.Ideas.Where(_=>_.Id == ideaId).Include(_=>_.Topic).Include(_=>_.Category).Include(_=>_.ApplicationUser).FirstOrDefault()
+                Idea = idea
             };
 
             return View(vm);

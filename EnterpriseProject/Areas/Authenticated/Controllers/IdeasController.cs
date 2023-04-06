@@ -50,12 +50,14 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                 var like = _db.Reacts.Where(_ => _.IdeaId == idea.Id).Sum(_ => _.Like);
                 var disLike = _db.Reacts.Where(_ => _.IdeaId == idea.Id).Sum(_ => _.DisLike);
                 var view = _db.Views.Count(_ => _.IdeaId == idea.Id);
+                var fileName = _db.Files.FirstOrDefault(_ => _.Id == idea.FileId).Name;
                 var react = new ReactVM()
                 {
                     View = view,
                     Idea = idea,
                     Like = like,
-                    DisLike = disLike
+                    DisLike = disLike,
+                    FileName = fileName
                 };
                 
                 reacts.Add(react);
@@ -227,6 +229,15 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                 return NotFound();
 
             return File(fileModel.Data, fileModel.ContentType, fileModel.Name);
+        }
+        
+        public async Task<IActionResult> Preview(int id)
+        {
+            var fileModel = await _db.Files.FindAsync(id);
+            if (fileModel == null)
+                return NotFound();
+
+            return File(fileModel.Data, fileModel.ContentType);
         }
     }
     
