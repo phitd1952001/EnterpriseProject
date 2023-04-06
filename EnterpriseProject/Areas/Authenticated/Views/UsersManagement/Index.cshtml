@@ -39,17 +39,17 @@
                 <td>@obj.Email</td>
                 <td>@obj.Role</td>
                 <td>
-                    <a asp-controller="UsersManagement" asp-action="Delete" onclick="confirm('Do you want to delete')" asp-route-id="@obj.Id" style="color: #c82333; font-size: 25px" class="btn-outline"><i class="fa-solid fa-trash-can"></i></a>
+                    <a asp-controller="UsersManagement" asp-action="Update" asp-route-id="@obj.Id" style="color: #FFD700; font-size: 25px" class="btn-outline"><i class="fa-solid fa-pen-to-square"></i></a>
                     @if (obj.LockoutEnd < DateTime.Now || obj.LockoutEnd == null)
                     {
-                        <a asp-controller="UsersManagement" asp-action="LockUnLock" asp-route-id="@obj.Id" style="color: #0056b3; font-size: 25px" class="btn-outline"><i class="fas fa-lock"></i></a>
+                        <a asp-controller="UsersManagement" asp-action="LockUnLock" asp-route-id="@obj.Id" style="color: #4682B4; font-size: 25px" class="btn-outline"><i class="fas fa-lock"></i></a>
                     }
                     else
                     {
-                        <a asp-controller="UsersManagement" asp-action="LockUnLock" asp-route-id="@obj.Id" style="color: #0056b3; font-size: 25px" class="btn-outline"><i class="fas fa-unlock-alt"></i></a>
+                        <a asp-controller="UsersManagement" asp-action="LockUnLock" asp-route-id="@obj.Id" style="color: #4682B4; font-size: 25px" class="btn-outline"><i class="fas fa-unlock-alt"></i></a>
                     }
-                    <a asp-controller="UsersManagement" asp-action="Update" asp-route-id="@obj.Id" style="color: #1e7e34; font-size: 25px" class="btn-outline"><i class="fa-solid fa-pen-to-square"></i></a>
-                    <a asp-controller="UsersManagement" asp-action="ConfirmEmail" asp-route-id="@obj.Id" style="color: #ffc107; font-size: 25px" class="btn-outline"><i class="fa-solid fa-key"></i></a>
+                    <a asp-controller="UsersManagement" asp-action="ConfirmEmail" asp-route-id="@obj.Id" style="color: 	#2F4F4F; font-size: 25px" class="btn-outline"><i class="fa-solid fa-key"></i></a>
+                    <a asp-controller="UsersManagement" asp-action="Delete" onclick="confirm('Do you want to delete')" asp-route-id="@obj.Id" style="color: #c82333; font-size: 25px" class="btn-outline"><i class="fa-solid fa-trash-can"></i></a>
                 </td>
             </tr>
             i++;

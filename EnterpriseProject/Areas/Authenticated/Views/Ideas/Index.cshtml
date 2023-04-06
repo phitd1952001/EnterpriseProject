@@ -88,7 +88,7 @@
             <td>
                 @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
                 {
-                    <a asp-controller="Ideas" asp-action="Upsert" asp-route-id="@obj.Idea.Id" asp-route-topicId="@Model.Topic.Id" style="color: #1e7e34; font-size: 25px" class="btn-outline">
+                    <a asp-controller="Ideas" asp-action="Upsert" asp-route-id="@obj.Idea.Id" asp-route-topicId="@Model.Topic.Id" style="color: #FFD700; font-size: 25px" class="btn-outline">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </a>
                     <a asp-controller="Ideas" asp-action="Delete" asp-route-id="@obj.Idea.Id" style="color: #c82333; font-size: 25px" class="btn-outline">
