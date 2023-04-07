@@ -1,0 +1,14 @@
+﻿.btn-detail {
+  background-color: #FFB90F;
+  color: #fff;
+  border-radius: 5px;
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.btn-detail:hover {
+  background-color: #FFB90F;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}

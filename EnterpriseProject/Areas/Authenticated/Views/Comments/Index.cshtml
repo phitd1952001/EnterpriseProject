@@ -4,65 +4,60 @@
 
 @{
     Layout = "_Layout";
+    <link rel="stylesheet" href="~/css/Comments/Create.css"/>
+    <link rel="stylesheet" href="~/css/Comments/BackToList.css"/>
 }
 
 <div class="row">
-    <div class="col-6">
+    <div class="col-4">
         <h1>Comments Table</h1>
     </div>
-    <div class="col-6">
+    <div class="col-8">
+        <button type="button" onclick="goBack()" class="btn button-back">Back To The Ideas Page</button>
         <form class="form-inline my-2 my-lg-0 float-right">
             <input id="myInput" class="form-control mr-sm-2" type="text" placeholder="Search">
         </form>
     </div>
-    <div>
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">Text</th>
-                <td scope="col">@Model.Idea.Text</td>
-            </tr>
-            <tr>
-                <th scope="col">File Path</th>
-                <td scope="col">@Model.FileName</td>
-            </tr>
-            <tr>
-                <th scope="col">Topic</th>
-                <td scope="col">@Model.Idea.Topic.Name</td>
-            </tr>
-            <tr>
-                <th scope="col">Category</th>
-                <td scope="col">@Model.Idea.Category.Name</td>
-            </tr>
-            <tr>
-                <th scope="col">Author</th>
-                @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager)){
-                    <td>@Model.Idea.ApplicationUser.FullName</td>
-                }
-                else
-                {
-                    <td>anynomous</td>
-                }
-            </tr>
-            <tr>
-                <th scope="col">Views</th>
-                <td scope="col">@Model.View</td>
-            </tr>
-            </thead>
-        </table>
-    </div>
 </div>
 
+<table class="table">
+  <thead class="thead-light">
+  <tr>
+      <th scope="col">Text</th>
+      <th scope="col">File Path</th>
+      <th scope="col">Topic</th>
+      <th scope="col">Category</th>
+      <th scope="col">Author</th>
+      <th scope="col">Views</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+      <td>@Model.Idea.Text</td>
+      <td>@Model.FileName</td>
+      <td>@Model.Idea.Topic.Name</td>
+      <td>@Model.Idea.Category.Name</td>
+      @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
+      {
+          <td>@Model.Idea.ApplicationUser.FullName</td>
+      }
+      else
+      {
+          <td>anynomous</td>
+      }
+      <td>@Model.View</td>
+  </tr>
+  </tbody>
+</table>
+<br/>
 <iframe src="@Url.Action("Preview", "Ideas", new { id = Model.Idea.FileId })" width="100%" height="600"></iframe>
-
+<br/>
 <form method="post" asp-action="AddComment">
     <input asp-for="IdeaId" class="form-control" hidden>
-    <div class="mb-3">
-        <label asp-for="Text" class="form-label"></label>
-        <input asp-for="Text" class="form-control">
+    <div class="mb-3 d-flex col-12">
+        <input asp-for="Text" class="form-control m-1 col-10" placeholder="Enter your comment">
+        <button type="submit" class="btn button-create m-1 col-2"><i class="fa fa-paper-plane"></i> Comment</button>
     </div>
-    <button type="submit" class="btn btn-primary">Comment</button>
-    <button type="button" onclick="goBack()" class="btn btn-success">Back</button>
 </form>
 <table class="table">
     <thead>

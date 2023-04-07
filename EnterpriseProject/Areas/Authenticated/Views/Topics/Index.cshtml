@@ -3,6 +3,13 @@
 
 @{
     Layout = "_Layout";
+    //
+    <link rel="stylesheet" href="~/css/topics/DownloadFileZip.css"/>
+    <link rel="stylesheet" href="~/css/topics/ExportExcel.css"/>
+    <link rel="stylesheet" href="~/css/topics/Update.css"/>
+    <link rel="stylesheet" href="~/css/topics/Delete.css"/>
+    <link rel="stylesheet" href="~/css/topics/Detail.css"/>
+    <link rel="stylesheet" href="~/css/topics/Create.css"/>
 }
 
 <div class="row">
@@ -12,7 +19,7 @@
     <div class="col-9">
         @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
         {
-            <a asp-controller="Topics" asp-action="Upsert" class="btn btn-success"><i class="fas fa-plus"></i> &nbsp;Create New Topic</a>
+            <a asp-controller="Topics" asp-action="Upsert" class="btn button-create"><i class="fas fa-plus"></i> &nbsp;Create New Topic</a>
         }
         <form class="form-inline my-2 my-lg-0 float-right">
             <input id="myInput" class="form-control mr-sm-2" type="text" placeholder="Search">
@@ -56,17 +63,17 @@
             <td>
                  @if (User.IsInRole(SD.Role_Manager))
                  {
-                     <a asp-controller="Topics" asp-action="DownloadZipFile" asp-route-topicId="@obj.Id" class="btn btn-danger">DownloadZipFile</a>
-                     <a asp-controller="Topics" asp-action="DownloadExcel" asp-route-topicId="@obj.Id" class="btn btn-danger">DownloadExcel</a>
+                     <a asp-controller="Topics" asp-action="DownloadZipFile" asp-route-topicId="@obj.Id" class="btn button-fileZip" ><i class="fas fa-download"></i> DownloadZipFile</a>
+                     <a asp-controller="Topics" asp-action="DownloadExcel" asp-route-topicId="@obj.Id" class="btn button-fileExcel" ><i class="fas fa-download"></i> DownloadExcel</a>
                  }
                  @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
                  {
-                     <a asp-controller="Topics" asp-action="Upsert" asp-route-id="@obj.Id" class="btn btn-success">Update</a>
-                     <a asp-controller="Topics" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-danger">Delete</a>
+                     <a asp-controller="Topics" asp-action="Upsert" asp-route-id="@obj.Id" class="btn btn-update">Update</a>
+                     <a asp-controller="Topics" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-delete">Delete</a>
                  }
                  @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager) || User.IsInRole(SD.Role_Staff) || User.IsInRole(SD.Role_Coordinator))
                  {
-                     <a asp-controller="Ideas" asp-action="Index" asp-route-topicId="@obj.Id" class="btn btn-warning">Details</a>
+                     <a asp-controller="Ideas" asp-action="Index" asp-route-topicId="@obj.Id" class="btn btn-detail">Details</a>
                  }
             </td>
         </tr>
