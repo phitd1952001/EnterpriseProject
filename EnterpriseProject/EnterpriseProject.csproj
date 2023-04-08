@@ -27,6 +27,9 @@
       <_ContentIncludedByDefault Remove="Views\Home\Index.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Home\Privacy.cshtml" />
       <_ContentIncludedByDefault Remove="Areas\Authenticated\Views\React\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\Button-Footer\BackToList.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\Button-Footer\Cart.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\Button-Footer\Create.css" />
     </ItemGroup>
 
 </Project>

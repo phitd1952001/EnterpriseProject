@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="~/css/Idead/Create.css"/>
     <link rel="stylesheet" href="~/css/Idead/BackToList.css"/>
     <link rel="stylesheet" href="~/css/Idead/Cart.css"/>
+    <link rel="stylesheet" href="~/css/Idead/card-footer.css"/>
 }
 
 <div class="container">
@@ -85,16 +86,14 @@
                         <i style="color: #30E3DF;" class="fa-solid fa-eye"></i>
                         Views: @obj.View
                     </li>
-                </ul>
-                <h5 class="card-title">Theme Name of ideas: @obj.Idea.Text</h5>
-            </div>
-            <div class="card-body">
-                <ul class="list-inline card-meta">
                     <li class="list-inline-item">
                         <i style="color: #D61355;" class="fa-solid fa-file-arrow-down"></i>
                         FileName: @obj.FileName
                     </li>
                 </ul>
+                <h5 class="card-title">Theme Name of ideas: @obj.Idea.Text</h5>
+            </div>
+            <div class="card-body">
                 //
             </div>
             <div class="card-footer">
