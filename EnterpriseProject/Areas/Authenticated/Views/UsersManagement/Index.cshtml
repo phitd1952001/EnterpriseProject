@@ -2,6 +2,7 @@
 
 @{
     Layout = "_Layout";
+    <link rel="stylesheet" href="~/css/UserManager/Create.css" />
 }
 
 @if (Model.Any())
@@ -11,7 +12,7 @@
             <h1>User Table</h1>
         </div>
         <div class="col-9">
-            <a class="btn btn-success" asp-area="Identity" asp-page="/Account/Register"><i class="fas fa-plus"></i> &nbsp; Create New User</a>
+            <a class="btn button-create" asp-area="Identity" asp-page="/Account/Register"><i class="fas fa-plus"></i> &nbsp; Create New User</a>
             <form class="form-inline my-2 my-lg-0 float-right">
                 <input id="myInput" class="form-control mr-sm-2 " type="text"  placeholder="Search">
             </form>
@@ -42,11 +43,11 @@
                     <a asp-controller="UsersManagement" asp-action="Update" asp-route-id="@obj.Id" style="color: #FFD700; font-size: 25px" class="btn-outline"><i class="fa-solid fa-pen-to-square"></i></a>
                     @if (obj.LockoutEnd < DateTime.Now || obj.LockoutEnd == null)
                     {
-                        <a asp-controller="UsersManagement" asp-action="LockUnLock" asp-route-id="@obj.Id" style="color: #4682B4; font-size: 25px" class="btn-outline"><i class="fas fa-lock"></i></a>
+                        <a asp-controller="UsersManagement" asp-action="LockUnLock" asp-route-id="@obj.Id" style="color: #0000FF; font-size: 25px" class="btn-outline"><i class="fas fa-lock"></i></a>
                     }
                     else
                     {
-                        <a asp-controller="UsersManagement" asp-action="LockUnLock" asp-route-id="@obj.Id" style="color: #4682B4; font-size: 25px" class="btn-outline"><i class="fas fa-unlock-alt"></i></a>
+                        <a asp-controller="UsersManagement" asp-action="LockUnLock" asp-route-id="@obj.Id" style="color: #0000FF; font-size: 25px" class="btn-outline"><i class="fas fa-unlock-alt"></i></a>
                     }
                     <a asp-controller="UsersManagement" asp-action="ConfirmEmail" asp-route-id="@obj.Id" style="color: 	#2F4F4F; font-size: 25px" class="btn-outline"><i class="fa-solid fa-key"></i></a>
                     <a asp-controller="UsersManagement" asp-action="Delete" onclick="confirm('Do you want to delete')" asp-route-id="@obj.Id" style="color: #c82333; font-size: 25px" class="btn-outline"><i class="fa-solid fa-trash-can"></i></a>

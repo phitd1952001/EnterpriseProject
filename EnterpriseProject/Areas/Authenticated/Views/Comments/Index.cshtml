@@ -6,115 +6,131 @@
     Layout = "_Layout";
     <link rel="stylesheet" href="~/css/Comments/Create.css"/>
     <link rel="stylesheet" href="~/css/Comments/BackToList.css"/>
+    <link rel="stylesheet" href="~/css/Comments/Comments.css"/>
 }
 
-<div class="row">
-    <div class="col-4">
-        <h1>Comments Table</h1>
-    </div>
-    <div class="col-8">
-        <button type="button" onclick="goBack()" class="btn button-back">Back To The Ideas Page</button>
-        <form class="form-inline my-2 my-lg-0 float-right">
-            <input id="myInput" class="form-control mr-sm-2" type="text" placeholder="Search">
-        </form>
-    </div>
-</div>
 
+<!--
 <table class="table">
-  <thead class="thead-light">
-  <tr>
-      <th scope="col">Text</th>
-      <th scope="col">File Path</th>
-      <th scope="col">Topic</th>
-      <th scope="col">Category</th>
-      <th scope="col">Author</th>
-      <th scope="col">Views</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr>
-      <td>@Model.Idea.Text</td>
-      <td>@Model.FileName</td>
-      <td>@Model.Idea.Topic.Name</td>
-      <td>@Model.Idea.Category.Name</td>
-      @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
-      {
-          <td>@Model.Idea.ApplicationUser.FullName</td>
-      }
-      else
-      {
-          <td>anynomous</td>
-      }
-      <td>@Model.View</td>
-  </tr>
-  </tbody>
-</table>
-<br/>
-<iframe src="@Url.Action("Preview", "Ideas", new { id = Model.Idea.FileId })" width="100%" height="600"></iframe>
-<br/>
-<form method="post" asp-action="AddComment">
-    <input asp-for="IdeaId" class="form-control" hidden>
-    <div class="mb-3 d-flex col-12">
-        <input asp-for="Text" class="form-control m-1 col-10" placeholder="Enter your comment">
-        <button type="submit" class="btn button-create m-1 col-2"><i class="fa fa-paper-plane"></i> Comment</button>
-    </div>
-</form>
-<table class="table">
-    <thead>
+    <thead class="thead-light">
     <tr>
-        <th scope="col">#</th>
         <th scope="col">Text</th>
-        <th scope="col">User</th>
-        <th scope="col">Datetime</th>
-        <th scope="col">Action</th>
+        <th scope="col">File Path</th>
+        <th scope="col">Topic</th>
+        <th scope="col">Category</th>
+        <th scope="col">Author</th>
+        <th scope="col">Views</th>
     </tr>
     </thead>
-    <tbody id="tblData">
-
-    @foreach (var obj in @Model.Comments)
-    {
-        <tr>
-            <th scope="row">@obj.Id</th>
-            @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
-            {
-                <td>@obj.ApplicationUser.FullName</td>
-            }
-            else
-            {
-                <td>anynomous</td>
-            }
-            <td>@obj.Text</td>
-            <td>@obj.DateTime</td>
-            <td>
-                @{
-                    var claimsIdentity = (ClaimsIdentity)User.Identity;
-                    var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-                }
-                @if (obj.UserId == claims.Value)
-                {
-                    <a asp-controller="Comments" asp-action="UpDate" asp-route-id="@obj.Id" style="color: #FFD700; font-size: 25px" class="btn-outline"><i class="fa-solid fa-pen-to-square"></i></a>
-                }
-                @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
-                {
-                    <a asp-controller="Comments" asp-action="Delete" asp-route-id="@obj.Id" style="color: #c82333; font-size: 25px" class="btn-outline"><i class="fa-solid fa-trash-can"></i></a>
-                }
-            </td>
-        </tr>
-    }
+    <tbody>
+    <tr>
+        <td>@Model.Idea.Text</td>
+        <td>@Model.FileName</td>
+        <td>@Model.Idea.Topic.Name</td>
+        <td>@Model.Idea.Category.Name</td>
+        @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
+        {
+            <td>@Model.Idea.ApplicationUser.FullName</td>
+        }
+        else
+        {
+            <td>anynomous</td>
+        }
+        <td>@Model.View</td>
+    </tr>
     </tbody>
 </table>
+-->
+<div class="row">
+        <div class="col-8">
+            <h1>Comments Table</h1>
+        </div>
+        <div class="col-4">
+            <button type="button" onclick="goBack()" class="btn button-back">Back To The Ideas Page</button>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <ul class="list-inline card-meta">
+                <li class="list-inline-item ">
+                    <i style="color: #008080;" class="fa-solid fa-user"></i>
+                    User: @(User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager) ? Model.Idea.ApplicationUser.FullName : "anonymous")
+                </li>
+                <li class="list-inline-item">
+                    <i style="color: #F94A29;" class="fa-solid fa-tag"></i>
+                    Category: @Model.Idea.Category.Name
+                </li>
+                <li class="list-inline-item">
+                    <i style="color: #FCE22A;" class="fa-solid fa-folder"></i>
+                    Topic: @Model.Idea.Topic.Name
+                </li>
+                <li class="list-inline-item">
+                    <i style="color: #D61355;" class="fa-solid fa-file-arrow-down"></i>
+                    FileName: @Model.FileName
+                </li>
+                <li class="list-inline-item">
+                    <i style="color: #30E3DF;" class="fa-solid fa-eye"></i>
+                    Views: @Model.View
+                </li>
+            </ul>
+            <h5 class="card-title">Theme Name of ideas: @Model.Idea.Text</h5>
+        </div>
+    </div>
+<iframe src="@Url.Action("Preview", "Ideas", new { id = Model.Idea.FileId })" width="100%" height="600"></iframe>
+<form method="post" asp-action="AddComment">
+    <input asp-for="IdeaId" class="form-control" hidden>
+    <div class="d-flex">
+        <input asp-for="Text" class="form-control" style="margin: 0 auto" placeholder="Enter your comment">
+        <button type="submit" class="btn button-create col-2" style="margin: 0 auto; margin-left: 2px; "><i class="fa fa-paper-plane"></i> Comment</button>
+    </div>
+</form>
+<br/>
+<div class="comments">
+    @foreach (var obj in @Model.Comments)
+    {
+        <div class="comment" id="tblData tr">
+            <div class="comment-header">
+                <span class="comment-user">
+                    @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
+                    {
+                        @obj.ApplicationUser.FullName
+                    }
+                    else
+                    {
+                        <TempData>anonymous</TempData>
+                    }
+                </span>
+                <span class="comment-datetime">@obj.DateTime</span>
+            </div>
+            <div class="comment-body">
+                <div class="comment-text">@obj.Text</div>
+                <div class="comment-actions">
+                    @{
+                        var claimsIdentity = (ClaimsIdentity)User.Identity;
+                        var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+                    }
+                    @if (obj.UserId == claims.Value)
+                    {
+                        //edit comments
+                        @if (User.IsInRole(SD.Role_Staff) || User.IsInRole(SD.Role_Coordinator) || User.IsInRole(SD.Role_Manager) || User.IsInRole(SD.Role_Admin))
+                        {
+                            <a class="comment-action edit" asp-controller="Comments" asp-action="UpDate" asp-route-id="@obj.Id"><i class="fa-solid fa-pen-to-square"></i> Update</a>
+                        }
+                        //delete comments
+                        @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
+                        {
+                            <a class="comment-action delete" asp-controller="Comments" asp-action="Delete" asp-route-id="@obj.Id"><i class="fa-solid fa-trash-can"></i> Delete</a>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
 
 @section Scripts
 {
     <script>
-         $(document).ready(function (){
-             $("#myInput").on("keyup", function(){
-              var value = $(this).val().toLowerCase();
-             $("#tblData tr").filter(function (){
-                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-             });
-         });
-     });
      function goBack(){
          window.history.back();
      }  

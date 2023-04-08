@@ -6,120 +6,138 @@
     Layout = "_Layout";
     <link rel="stylesheet" href="~/css/Idead/Create.css"/>
     <link rel="stylesheet" href="~/css/Idead/BackToList.css"/>
+    <link rel="stylesheet" href="~/css/Idead/Cart.css"/>
 }
 
-
-<div class="row">
-    <div class="col-6">
-        <h1>Idea Table</h1>
+<div class="container">
+    <div class="row">
+            <div class="col-md-4">
+                <h1>Idea Table</h1>
+            </div>
+            <div class="col-md-8">
+                @if (Model.Topic.ClosureDate > DateTime.Now)
+                {
+                    <a asp-controller="Ideas" asp-action="Upsert" asp-route-topicId="@Model.Topic.Id" class="btn btn-primary float-md-right button-create"><i class="fas fa-plus"></i> &nbsp;Create New Idea</a>
+                }
+                <form class="form-inline my-2 my-lg-0 float-md-right">
+                    <input id="myInput" class="form-control mr-sm-2" type="text" placeholder="Search">
+                </form>
+            </div>
+        </div>
+    <div class="row mt-2">
+        <div class="col-md-12">
+            <a asp-controller="Topics" asp-action="Index" class="btn btn-secondary button-back">Back To Topics Page</a>
+        </div>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Topic Details</h5>
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <td>@Model.Topic.Name</td>
+                        </tr>
+                        <tr>
+                            <th>Deadline 1</th>
+                            <td>@Model.Topic.ClosureDate</td>
+                        </tr>
+                        <tr>
+                            <th>Deadline 2</th>
+                            <td>@Model.Topic.FinalClosureDate</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-6">
-        @if (Model.Topic.ClosureDate > DateTime.Now)
-        {
-            <a asp-controller="Ideas" asp-action="Upsert" asp-route-topicId="@Model.Topic.Id" class="btn button-create"><i class="fas fa-plus"></i> &nbsp;Create New Idea</a>
-        }
-        <form class="form-inline my-2 my-lg-0 float-right">
-            <input id="myInput" class="form-control mr-sm-2" type="text" placeholder="Search">
-        </form>
-    </div>
-</div>
-<div>
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">Name</th>
-            <td scope="col">@Model.Topic.Name</td>
-        </tr>
-        <tr>
-            <th scope="col">Deadline 1</th>
-            <td scope="col">@Model.Topic.ClosureDate</td>
-        </tr>
-        <tr>
-            <th scope="col">Deadline 2</th>
-            <td scope="col">@Model.Topic.FinalClosureDate</td>
-        </tr>
-        </thead>
-    </table>
-</div>
-<div>
-    <a asp-controller="Topics" asp-action="Index" class="btn button-back">
-        Back To Topics Page
-    </a>
-</div>
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">#</th>
-        <th scope="col">Text</th>
-        <th scope="col">File Path</th>
-        <th scope="col">Datetime</th>
-        <th scope="col">Category</th>
-        <th scope="col">Topic</th>
-        <th scope="col">User</th>
-        <th scope="col">View</th>
-        <th scope="col">Like</th>
-        <th scope="col">Dislike</th>
-        <th scope="col">Action</th>
-    </tr>
-    </thead>
-    <tbody id="tblData">
-
-    <form method="get" asp-action="Index" asp-controller="Ideas">
-    </form>
-
     @foreach (var obj in @Model.ReactVms)
     {
-        <tr>
-            <th scope="row">@obj.Idea.Id</th>
-            <td>@obj.Idea.Text</td>
-            <td>@obj.FileName</td>
-            <td>@obj.Idea.DateTime</td>
-            <td>@obj.Idea.Category.Name</td>
-            <td>@obj.Idea.Topic.Name</td>
-            @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
-            {
-                <td>@obj.Idea.ApplicationUser.FullName</td>
-            }
-            else
-            {
-                <td>anynomous</td>
-            }
-            <td>@obj.View</td>
-            <td>@obj.Like</td>
-            <td>@obj.DisLike</td>
-            <td>
-                @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
-                {
-                    <a asp-controller="Ideas" asp-action="Upsert" asp-route-id="@obj.Idea.Id" asp-route-topicId="@Model.Topic.Id" style="color: #FFD700; font-size: 20px" class="btn-outline">
-                        <i class="fa-solid fa-pen-to-square"></i>
-                    </a>
-                    <a asp-controller="Ideas" asp-action="Delete" asp-route-id="@obj.Idea.Id" style="color: #c82333; font-size: 20px" class="btn-outline">
-                        <i class="fa-solid fa-trash-can"></i>
-                    </a>
-                }
-                @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager) || User.IsInRole(SD.Role_Staff) || User.IsInRole(SD.Role_Coordinator))
-                {
-                    if (obj.Idea.Topic.ClosureDate > DateTime.Now && obj.Idea.Topic.FinalClosureDate > DateTime.Now)
+        <div class="card">
+            <div class="card-header">
+                <ul class="list-inline card-meta">
+                    <li class="list-inline-item ">
+                        <i style="color: #008080;" class="fa-solid fa-user"></i>
+                        User: @(User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager) ? obj.Idea.ApplicationUser.FullName : "anonymous")
+                    </li>
+                    <li class="list-inline-item">
+                        <i style="color: #b30000;" class="fa-solid fa-calendar "></i>
+                        Date: @obj.Idea.DateTime
+                    </li>
+                    <li class="list-inline-item">
+                        <i style="color: #f57d00" class="fa-solid fa-tag"></i>
+                        Category: @obj.Idea.Category.Name
+                    </li>
+                    <li class="list-inline-item">
+                        <i style="color: #FCE22A" class="fa-solid fa-folder"></i>
+                        Topic: @obj.Idea.Topic.Name
+                    </li>
+                    <li class="list-inline-item">
+                        <i style="color: #0066ff;" class="fa-solid fa-thumbs-up"></i>
+                        Likes: @obj.Like
+                    </li>
+                    <li class="list-inline-item">
+                        <i style="color: #0066ff;" class="fa-solid fa-thumbs-down"></i>
+                        Dislikes: @obj.DisLike
+                    </li>
+                    <li class="list-inline-item">
+                        <i style="color: #30E3DF;" class="fa-solid fa-eye"></i>
+                        Views: @obj.View
+                    </li>
+                </ul>
+                <h5 class="card-title">Theme Name of ideas: @obj.Idea.Text</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-inline card-meta">
+                    <li class="list-inline-item">
+                        <i style="color: #D61355;" class="fa-solid fa-file-arrow-down"></i>
+                        FileName: @obj.FileName
+                    </li>
+                </ul>
+                //
+            </div>
+            <div class="card-footer">
+                <div class="react-buttons">
+                    @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager) || User.IsInRole(SD.Role_Staff) || User.IsInRole(SD.Role_Coordinator))
                     {
-                        <a asp-controller="React" asp-action="Like" asp-route-ideaId="@obj.Idea.Id" style="color: #1b6ec2; font-size: 20px" class="btn-outline">
-                            <i class="fa-regular fa-thumbs-up"></i>
+                        if (obj.Idea.Topic.ClosureDate > DateTime.Now && obj.Idea.Topic.FinalClosureDate > DateTime.Now)
+                        {
+                            <a asp-controller="React" asp-action="Like" asp-route-ideaId="@obj.Idea.Id" class="btn btn-outline-primary btn-sm">
+                                <i class="fa-regular fa-thumbs-up"></i>
+                                <span>Like</span>
+                            </a>
+                            <a asp-controller="React" asp-action="DisLike" asp-route-ideaId="@obj.Idea.Id" class="btn btn-outline-primary btn-sm">
+                                <i class="fa-sharp fa-regular fa-thumbs-down"></i>
+                                <span>Dislike</span>
+                            </a>
+                            <a asp-controller="Comments" asp-action="Index" asp-route-ideaId="@obj.Idea.Id" class="btn btn-outline-secondary btn-sm">
+                                <i class="fa-regular fa-comments"></i>
+                                <span>Comments</span>
+                            </a>
+                            <a asp-controller="Ideas" asp-action="Download" asp-route-id="@obj.Idea.FileId" class="btn btn-outline-dark btn-sm">
+                                <i class="fa-solid fa-file-arrow-down"></i>
+                                <span>Download</span>
+                            </a>
+                        }
+                    }
+                    @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
+                    {
+                        <a asp-controller="Ideas" asp-action="Upsert" asp-route-id="@obj.Idea.Id" asp-route-topicId="@Model.Topic.Id" class="btn btn-outline-warning btn-sm">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                            <span>Edit</span>
                         </a>
-                        <a asp-controller="React" asp-action="DisLike" asp-route-ideaId="@obj.Idea.Id" style="color: #1b6ec2; font-size: 20px" class="btn-outline">
-                            <i class="fa-sharp fa-regular fa-thumbs-down"></i>
-                        </a>
-                        <a asp-controller="Comments" asp-action="Index" asp-route-ideaId="@obj.Idea.Id" style="color: #95999c; font-size: 20px" class="btn-outline">
-                            <i class="fa-regular fa-comments"></i>
-                        </a>
-                        <a asp-controller="Ideas" asp-action="Download" asp-route-id="@obj.Idea.FileId" style="color: #4e555b; font-size: 20px" class="btn-outline">
-                            <i class="fa-solid fa-file-arrow-down"></i>
+                        <a asp-controller="Ideas" asp-action="Delete" asp-route-id="@obj.Idea.Id" class="btn btn-outline-danger btn-sm">
+                            <i class="fa-solid fa-trash-can"></i>
+                            <span>Delete</span>
                         </a>
                     }
-                }
-            </td>
-        </tr>
+                </div>
+            </div>
+        </div>
     }
-    </tbody>
-</table>
+</div>
+        
 
 @section Scripts
 {
@@ -127,7 +145,7 @@
          $(document).ready(function (){
              $("#myInput").on("keyup", function(){
               var value = $(this).val().toLowerCase();
-             $("#tblData tr").filter(function (){
+             $("#tblData").filter(function (){
                  $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
              });
          });

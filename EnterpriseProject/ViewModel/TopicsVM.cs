@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using EnterpriseProject.Models;
 
 namespace EnterpriseProject.ViewModels
@@ -7,5 +8,6 @@ namespace EnterpriseProject.ViewModels
     {
         public IEnumerable<ReactVM> ReactVms { get; set; }
         public Topic Topic { get; set; }
+        public int FileId { get; set; }
     }
 }
