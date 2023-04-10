@@ -60,7 +60,9 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                 }
             }
             
-            return View(statistics);
+            ViewBag.Data = statistics.Select(_=>_.NumberOfIdeas).ToArray();
+            ViewBag.Labels = statistics.Select(_=>_.DepartmentName).ToArray();
+            return View();
         }
     }
 }

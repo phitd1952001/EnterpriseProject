@@ -93,10 +93,8 @@
                 </ul>
                 <h5 class="card-title">Theme Name of ideas: @obj.Idea.Text</h5>
             </div>
-            <div class="card-body">
-                //
-            </div>
-            <div class="card-footer">
+            <iframe src="@Url.Action("Preview", "Ideas", new { id = obj.Idea.FileId })" width="100%" height="600"></iframe>
+            <div class="card-footer mt-0">
                 <div class="react-buttons">
                     @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager) || User.IsInRole(SD.Role_Staff) || User.IsInRole(SD.Role_Coordinator))
                     {
