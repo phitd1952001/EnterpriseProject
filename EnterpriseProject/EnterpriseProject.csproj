@@ -33,4 +33,8 @@
       <_ContentIncludedByDefault Remove="wwwroot\js\Statistics\Chart.css" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Areas\UnAuthenticated\Views\Terms and Conditions" />
+    </ItemGroup>
+
 </Project>

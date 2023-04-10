@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -18,5 +19,7 @@ namespace EnterpriseProject.ViewModels
         public IFormFile File { get; set; }
 
         public string FileName { get; set; }
+        
+        [Required] public bool IsAgree { get; set; }
     }
 }

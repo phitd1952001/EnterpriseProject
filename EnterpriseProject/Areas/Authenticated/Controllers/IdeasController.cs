@@ -34,6 +34,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
         // GET
         public IActionResult Index(string searchString, int topicId)
         {
+            ViewData["Message"] = TempData["Message"];
             var listIdea = _db.Ideas.Where(_=>_.TopicId == topicId).Include(i => i.ApplicationUser)
                 .Include(i => i.Category)
                 .Include(i => i.Topic).ToList();
@@ -73,8 +74,9 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
         }
 
         [HttpGet]
-        public IActionResult Upsert(int? id, int topicId)
+        public IActionResult Upsert(int? id, int topicId )
         {
+            
             IdeaVM ideaVm = new IdeaVM()
             {
                 CategoryList = categoriesSelectListItems(),
@@ -93,9 +95,9 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             ideaVm.CategoryId = idea.CategoryId;
             ideaVm.TopicId = idea.TopicId;
             ideaVm.FileName = _db.Files.Find(idea.FileId).Name;
-
             return View(ideaVm);
         }
+        
         
         [HttpPost]
         public async Task<IActionResult> UpSert(IdeaVM ideaVm)
@@ -104,98 +106,104 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             {
                 var claimsIdentity = (ClaimsIdentity)User.Identity;
                 var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-
-                if (ideaVm.Id == 0)
+                
+                if (ideaVm.IsAgree)
                 {
-                    // SendEmail to QA coordinator
-                    var currentUser = _db.ApplicationUsers.FirstOrDefault(i => i.Id == claims.Value);
-                    var userList = _db.ApplicationUsers.Where(_ => _.DepartmentId == currentUser.DepartmentId).ToList();
-                    ApplicationUser qaCoordinator = new ApplicationUser();
-                    foreach (var user in userList)
+                    if (ideaVm.Id == 0)
                     {
-                        var roleTemp = await _userManager.GetRolesAsync(user);
-                        if (roleTemp.First() == SD.Role_Coordinator)
+                            // SendEmail to QA coordinator
+                        var currentUser = _db.ApplicationUsers.FirstOrDefault(i => i.Id == claims.Value);
+                        var userList = _db.ApplicationUsers.Where(_ => _.DepartmentId == currentUser.DepartmentId).ToList();
+                        ApplicationUser qaCoordinator = new ApplicationUser();
+                        foreach (var user in userList)
                         {
-                            qaCoordinator = user;
-                            break;
+                            var roleTemp = await _userManager.GetRolesAsync(user);
+                            if (roleTemp.First() == SD.Role_Coordinator)
+                            {
+                                qaCoordinator = user;
+                                break;
+                            }
                         }
-                    }
-                    
-                    // add file
-                    if (ideaVm.File == null || ideaVm.File.Length == 0)
-                        return BadRequest("No file selected");
+                        
+                        // add file
+                        if (ideaVm.File == null || ideaVm.File.Length == 0)
+                            return BadRequest("No file selected");
 
-                    var fileModel = new File
-                    {
-                        Name = ideaVm.File.FileName,
-                        ContentType = ideaVm.File.ContentType
-                    };
+                        var fileModel = new File
+                        {
+                            Name = ideaVm.File.FileName,
+                            ContentType = ideaVm.File.ContentType
+                        };
 
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        await ideaVm.File.CopyToAsync(memoryStream);
-                        fileModel.Data = memoryStream.ToArray();
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            await ideaVm.File.CopyToAsync(memoryStream);
+                            fileModel.Data = memoryStream.ToArray();
+                        }
+                        _db.Files.Add(fileModel);
+                        _db.SaveChanges();
+                        
+                        // create idea
+                        var ideaCreate = new Idea()
+                        {
+                            Text = ideaVm.Text,
+                            DateTime = ideaVm.DateTime,
+                            FileId = fileModel.Id,
+                            CategoryId = ideaVm.CategoryId,
+                            TopicId = ideaVm.TopicId,
+                            UserId = claims.Value
+                        };
+                        _db.Ideas.Add(ideaCreate);
+                        _db.SaveChanges();
+
+                        //check idea được add thành công hay không và send mail to coordinator
+                        if (qaCoordinator != null && qaCoordinator.Email != null)
+                        {
+                                await _emailSender
+                                .SendEmailAsync(qaCoordinator.Email, "New Idea Is Added", 
+                                    $"<h1>New Idea Is Added</h1>");
+                        }
+                        TempData["Message"] = "Success: Add Successfully";
+                        return RedirectToAction(nameof(Index), new {topicId = ideaVm.TopicId});
                     }
-                    _db.Files.Add(fileModel);
+                    var idea = _db.Ideas.Find(ideaVm.Id);
+                    idea.Text = ideaVm.Text;
+                    idea.DateTime = ideaVm.DateTime;
+                    idea.CategoryId = ideaVm.CategoryId;
+                    idea.TopicId = ideaVm.TopicId;
+                    idea.UserId = claims.Value;
+                
+
+                    if (ideaVm.File != null && ideaVm.File.Length != 0)
+                    {
+                        var fileModel = new File
+                        {
+                            Name = ideaVm.File.FileName,
+                            ContentType = ideaVm.File.ContentType
+                        };
+
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            await ideaVm.File.CopyToAsync(memoryStream);
+                            fileModel.Data = memoryStream.ToArray();
+                        }
+                        // luu file new
+                        _db.Files.Add(fileModel);
+                        // xoa file cu
+                        var oldFile = _db.Files.Find(idea.FileId);
+                        _db.Remove(oldFile);
+                        _db.SaveChanges();
+                        idea.FileId = fileModel.Id;
+                    }
+                
+                    _db.Update(idea);
                     _db.SaveChanges();
-                    
-                    // create idea
-                    var ideaCreate = new Idea()
-                    {
-                        Text = ideaVm.Text,
-                        DateTime = ideaVm.DateTime,
-                        FileId = fileModel.Id,
-                        CategoryId = ideaVm.CategoryId,
-                        TopicId = ideaVm.TopicId,
-                        UserId = claims.Value
-                    };
-                    _db.Ideas.Add(ideaCreate);
-                    _db.SaveChanges();
-
-                    //check idea được add thành công hay không và send mail to coordinator
-                    if (qaCoordinator != null && qaCoordinator.Email != null)
-                    {
-                        await _emailSender
-                            .SendEmailAsync(qaCoordinator.Email, "New Idea Is Added", 
-                                $"<h1>New Idea Is Added</h1>");
-                    }
-                    
                     return RedirectToAction(nameof(Index), new {topicId = ideaVm.TopicId});
                 }
-
-                var idea = _db.Ideas.Find(ideaVm.Id);
-                idea.Text = ideaVm.Text;
-                idea.DateTime = ideaVm.DateTime;
-                idea.CategoryId = ideaVm.CategoryId;
-                idea.TopicId = ideaVm.TopicId;
-                idea.UserId = claims.Value;
-                
-
-                if (ideaVm.File != null && ideaVm.File.Length != 0)
+                else
                 {
-                    var fileModel = new File
-                    {
-                        Name = ideaVm.File.FileName,
-                        ContentType = ideaVm.File.ContentType
-                    };
-
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        await ideaVm.File.CopyToAsync(memoryStream);
-                        fileModel.Data = memoryStream.ToArray();
-                    }
-                    // luu file new
-                    _db.Files.Add(fileModel);
-                    // xoa file cu
-                    var oldFile = _db.Files.Find(idea.FileId);
-                    _db.Remove(oldFile);
-                    _db.SaveChanges();
-                    idea.FileId = fileModel.Id;
+                    ViewData["Message"] = "Fail: You must agree Terms and Conditions before submit";
                 }
-                
-                _db.Update(idea);
-                _db.SaveChanges();
-                return RedirectToAction(nameof(Index), new {topicId = ideaVm.TopicId});
             }
 
             ideaVm.CategoryList = categoriesSelectListItems();
