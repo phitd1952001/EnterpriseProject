@@ -29,4 +29,8 @@
       <_ContentIncludedByDefault Remove="Areas\Authenticated\Views\React\Index.cshtml" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Areas\UnAuthenticated\Views\Terms and Conditions" />
+    </ItemGroup>
+
 </Project>

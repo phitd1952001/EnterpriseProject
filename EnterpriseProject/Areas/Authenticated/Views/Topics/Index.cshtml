@@ -57,7 +57,7 @@
                  @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
                  {
                      <a asp-controller="Topics" asp-action="Upsert" asp-route-id="@obj.Id" class="btn  btn-success">Update</a>
-                     <a asp-controller="Topics" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-danger">Delete</a>
+                     <a asp-controller="Topics" asp-action="Delete" asp-route-id="@obj.Id" onclick="return confirm('Are you sure you want to delete this topic?');" class="btn btn-danger">Delete</a>
                      <a asp-controller="Topics" asp-action="DownloadZipFile" asp-route-topicId="@obj.Id" class="btn btn-danger">DownloadZipFile</a>
                      <a asp-controller="Topics" asp-action="DownloadExcel" asp-route-topicId="@obj.Id" class="btn btn-danger">DownloadExcel</a>
                  }

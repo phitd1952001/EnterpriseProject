@@ -14,7 +14,7 @@ namespace EnterpriseProject.Models
         public string Text { get; set; }
         public int FileId { get; set; }
         public DateTime DateTime { get; set; }
-        
+
         [Required]
         public string UserId { get; set; }
         [ForeignKey("UserId")]
