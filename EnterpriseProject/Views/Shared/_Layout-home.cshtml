@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using EnterpriseProject.Utility
+@using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,9 +9,10 @@
     <title>@ViewData["Title"] - EnterpriseProject</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css"/>
+     <link rel="stylesheet" href="~/css/Home-page/footer.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-<body>
+<body style="margin-bottom: 0">
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
         <div class="container">
@@ -69,12 +71,35 @@
         @RenderBody()
     </main>
 </div>
-
-<footer class="border-top footer text-muted">
+<footer style="padding: 0">
     <div class="container">
-       &copy; @DateTime.Now.Year - EnterpriseProject
+    <div class="row">
+        <div class="col">
+            <h3>Contact us</h3>
+            <p>Hotline: 086.779.1686</p>
+            <p>Email: info@greenwich.edu.vn</p>
+        </div>
+        <div class="col">
+            <h3>Ho Chi Minh Facility</h3>
+            <p>Phone: 028.7300.2266</p>
+            <p>Address: 20 Cong Hoa Street Tan Binh District</p>
+        </div>
+        <div class="col">
+            <h3>Social networking sites</h3>
+            <div class="social-links ">
+                <a href=https://www.facebook.com/GreenwichVietnam/?utm_source=google&utm_medium=search&utm_campaign=brand_greenwich&utm_term=greenwich_vietnam><i class="fab fa-facebook"></i></a>
+                <a href="https://twitter.com/UniofGreenwich"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.linkedin.com/school/university-of-greenwich/"><i class="fab fa-linkedin"></i></a>
+                <a href="https://www.youtube.com/user/UniversityGreenwich"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="copy">
+        <p>&copy; @DateTime.Now.Year Greenwich.edu.vn. All rights reserved.</p>
     </div>
 </footer>
+
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>

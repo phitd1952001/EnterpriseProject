@@ -30,6 +30,7 @@
       <_ContentIncludedByDefault Remove="wwwroot\css\Button-Footer\BackToList.css" />
       <_ContentIncludedByDefault Remove="wwwroot\css\Button-Footer\Cart.css" />
       <_ContentIncludedByDefault Remove="wwwroot\css\Button-Footer\Create.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\js\Statistics\Chart.css" />
     </ItemGroup>
 
 </Project>

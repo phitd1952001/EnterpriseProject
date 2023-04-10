@@ -1,0 +1,50 @@
+﻿.custom-about {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 250px;
+    background: url("https://example.com/images/bg-pattern.jpg") no-repeat center center/cover;
+    color: #fff;
+    font-family: sans-serif;
+    padding: 50px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.about-image {
+    flex: 0 0 50%;
+    padding-right: 20px;
+}
+
+.about-text {
+    flex: 0 0 50%;
+}
+
+.about-text h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: black;
+}
+
+.about-text p {
+    font-size: 20px;
+    line-height: 1.5;
+    margin-bottom: 30px;
+    color: #4e555b;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #fff;
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn:hover {
+    background-color: #333;
+    color: #fff;
+}

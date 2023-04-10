@@ -1,0 +1,60 @@
+﻿footer {
+    padding:  0;
+    margin-bottom: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.col {
+    flex-basis: 33.33%;
+    padding: 0 15px;
+    text-align: left;
+}
+
+.col h3 {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    justify-content: space-between;
+}
+
+.social-links {
+    display: inline-flex;
+    text-align: center;
+}
+
+.social-links a {
+    display: inline-block;
+    margin: 0 10px;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.custom-address{
+    display: inline-flex;
+}
+
+.social-links a:hover {
+    color: #007bff;
+}
+
+.copy {
+    background-color: #333;
+    color: #fff;
+    padding: 15px 0;
+}
+
+.copy p {
+    margin: 0;
+    font-size: 0.8rem;
+    text-align: center;
+}

@@ -1,15 +1,113 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
-	Layout = "_Layout-home";
-    <link rel="stylesheet" href="~/css/Home-page/home.css" />
+  Layout = "_Layout-home";
+  <link rel="stylesheet" href="~/css/Home-page/Home-page.css"/>
+  <link rel="stylesheet" href="~/css/Home-page/home.css"/>
+  <link rel="stylesheet" href="~/css/Home-page/About.css"/>
+  <link rel="stylesheet" href="~/css/Home-page/Cart-profile.css"/>
 }
 
-<div>
+<div class="custom-container">
+  <div class="Home">
     <div class="fullscreen-image">
-        <img src="~/images/image1-6.png"/>
-        <div class="overlay-text">
-            <h1>Welcome to the Idea website</h1>
-            <a class="btn btn-outline-light border-0 text-dark" asp-area="Authenticated" asp-controller="Topics" asp-action="index"><i class="fa-sharp fa-solid fa-forward-fast"> Access To Topics</i></a>
-        </div>
+      <img src="~/images/image1-6.png" alt="Welcome Image">
+      <div class="overlay-text">
+        <h1>Welcome to the Idea website</h1>
+        <a class="custom-btn custom-btn-outline-light border-0 text-dark" asp-area="Authenticated" asp-controller="Topics" asp-action="index"><i class="fa-sharp fa-solid fa-forward-fast"></i> Access To Topics</a>
+      </div>
     </div>
+  </div>
+
+  <div class="custom-about">
+    <div class="about-image">
+      <img style="border-radius: 1.5rem;" src="~/images/gr1.jpg" alt="About us">
+    </div>
+    <div class="about-text">
+      <h2>Welcome to our website</h2>
+      <p>
+        We are a team of passionate developers who love to create innovative web solutions that help businesses grow.
+        We are a team of passionate developers who love to create innovative web solutions that help businesses grow.
+        We are a team of passionate developers who love to create innovative web solutions that help businesses grow.
+      </p>
+      <a href="#" class="btn">Learn More</a>
+    </div>
+  </div>
+  
+  <div class="profile">
+    <h1 class="profile-h1">Profile Of Group Members</h1>
+    <div class="profiles">
+        <div class="card">
+          <div class="card_img">
+            <img src="~/images/280586398_3270923393231787_2372044842550008879_n.jpg" alt="Duong Phi" width="300px">
+          </div>
+          <h2 > Truong Duong Phi</h2>
+          <h3 style="text-align: center;">(0869176185)</h3>
+          <p style="margin: 5px;"> ( FullStack Developer )</p>
+          <div class="card__social">
+            <a href="https://www.facebook.com/profile.php?id=100009424754692">
+              <i class="fa-brands fa-facebook"></i>
+            </a>
+            <a href="https://github.com/phitd1952001">
+              <i class="fa-brands fa-github"></i>
+            </a>
+            <a href="https://www.instagram.com/duongphi1905/">
+              <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a href="https://mail.google.com/mail/u/0/#inbox">
+              <i class="fa-solid fa-envelope"></i>
+            </a>
+          </div>
+          <a href="https://www.facebook.com/profile.php?id=100009424754692"> <button > Follow Me </button></a>
+        </div>
+        <div class="card">
+          <div class="card_img">
+            <img src="~/images/280586398_3270923393231787_2372044842550008879_n.jpg" alt="Duong Phi" width="300px">
+          </div>
+          <h2 > Truong Duong Phi</h2>
+          <h3 style="text-align: center;">(0869176185)</h3>
+          <p style="margin: 5px;"> ( FullStack Developer )</p>
+          <div class="card__social">
+            <a href="https://www.facebook.com/profile.php?id=100009424754692">
+              <i class="fa-brands fa-facebook"></i>
+            </a>
+            <a href="https://github.com/phitd1952001">
+              <i class="fa-brands fa-github"></i>
+            </a>
+            <a href="https://www.instagram.com/duongphi1905/">
+              <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a href="https://www.youtube.com">
+              <i class="fa-solid fa-envelope"></i>
+            </a>
+          </div>
+          <a href="https://www.facebook.com/profile.php?id=100009424754692"> <button > Follow Me </button></a>
+        </div>
+        <div class="card">
+          <div class="card_img">
+            <img src="~/images/280586398_3270923393231787_2372044842550008879_n.jpg" alt="Duong Phi" width="300px">
+          </div>
+          <h2 > Truong Duong Phi</h2>
+          <h3 style="text-align: center;">(0869176185)</h3>
+          <p style="margin: 5px;"> ( FullStack Developer )</p>
+          <div class="card__social">
+            <a href="https://www.facebook.com/profile.php?id=100009424754692">
+              <i class="fa-brands fa-facebook"></i>
+            </a>
+            <a href="https://github.com/phitd1952001">
+              <i class="fa-brands fa-github"></i>
+            </a>
+            <a href="https://www.instagram.com/duongphi1905/">
+              <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a href="https://www.youtube.com">
+              <i class="fa-solid fa-envelope"></i>
+            </a>
+          </div>
+          <a href="https://www.facebook.com/profile.php?id=100009424754692"> <button > Follow Me </button></a>
+        </div>
+      </div>
+  </div>
+  
 </div>
+
+
