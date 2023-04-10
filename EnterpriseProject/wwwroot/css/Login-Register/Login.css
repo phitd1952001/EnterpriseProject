@@ -23,10 +23,6 @@
   font-size: 0.875rem;
   line-height: 1.25rem;
 }
-.input[type="password"] {
-  color: white;
-}
-
 
 .input-group label {
   display: block;
