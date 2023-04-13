@@ -108,7 +108,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             {
                 await _emailSender
                     .SendEmailAsync(userOwnerIdea.Email, "New Comment for your idea",
-                        "<h1>New Comment for your idea</h1>");
+                        $"<h1>New Comment for your idea from {_db.ApplicationUsers.Find(claims.Value).FullName} {idea.Text}</h1>");
             }
             return RedirectToAction(nameof(Index), new {ideaId = commentVm.IdeaId});
         }

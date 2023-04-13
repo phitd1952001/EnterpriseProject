@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using EnterpriseProject.Data;
 using EnterpriseProject.Utility;
 using EnterpriseProject.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EnterpriseProject.Areas.Authenticated.Controllers
@@ -13,14 +15,17 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
     public class StatisticsController : Controller
     {
         private readonly ApplicationDbContext _db;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public StatisticsController(ApplicationDbContext db)
+        public StatisticsController(ApplicationDbContext db, UserManager<IdentityUser> userManager)
         {
             _db = db;
+            _userManager = userManager;
         }
         // GET
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            // idea by department
             var ideas = _db.Ideas.ToList();
             var userIds = ideas.Select(_ => _.UserId);
             var users = _db.ApplicationUsers.Where(_ => userIds.Contains(_.Id)).ToList();
@@ -59,6 +64,35 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             
             ViewBag.Data = statistics.Select(_=>_.NumberOfIdeas).ToArray();
             ViewBag.Labels = statistics.Select(_=>_.DepartmentName).ToArray();
+            
+            // percentage idea by department
+            
+            // number of staff by department
+            var allUsers = _db.ApplicationUsers.ToList();
+            foreach (var user in allUsers)
+            {
+                var roleTemp = await _userManager.GetRolesAsync(user);
+                user.Role = roleTemp.FirstOrDefault();
+            }
+
+            var staffs = allUsers.Where(_ => _.Role == SD.Role_Staff).ToList();
+            var departmentAll = _db.Departments.ToList();
+
+            var statisticUsers = new List<Statistic>();
+            foreach (var department in departmentAll)
+            {
+                var statistic = new Statistic()
+                {
+                    DepartmentName = department.Name,
+                    NumberOfIdeas = staffs.Count(_ => _.DepartmentId == department.Id)
+                };
+                
+                statisticUsers.Add(statistic);
+            }
+            
+            ViewBag.DataCtv = statisticUsers.Select(_=>_.NumberOfIdeas).ToArray();
+            ViewBag.LabelCtv = statisticUsers.Select(_=>_.DepartmentName).ToArray();
+          
             return View();
         }
     }

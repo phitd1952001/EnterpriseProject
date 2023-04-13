@@ -90,9 +90,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
 
             // Tạo một thư mục tạm để lưu trữ các tệp
             var tempDirectory = Path.Combine(Path.GetTempPath(), _db.Topics.Find(topicId).Id.ToString());
-            //var tempDirectory = Path.Combine("E:", _db.Topics.Find(topicId).Name);
-            
-            
+
             // Nếu thư mục đã tồn tại, xóa nó
             if (Directory.Exists(tempDirectory))
             {
@@ -195,5 +193,4 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
         }
 
     }
-        
-    }
+}

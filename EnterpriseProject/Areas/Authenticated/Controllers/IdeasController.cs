@@ -161,7 +161,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                         {
                                 await _emailSender
                                 .SendEmailAsync(qaCoordinator.Email, "New Idea Is Added", 
-                                    $"<h1>New Idea Is Added</h1>");
+                                    $"<h1>New Idea Is Added from to {_db.ApplicationUsers.Find(claims.Value).FullName} to topics {_db.Topics.Find(ideaVm.TopicId).Name}</h1>");
                         }
                         TempData["Message"] = "Success: Add Successfully";
                         return RedirectToAction(nameof(Index), new {topicId = ideaVm.TopicId});
