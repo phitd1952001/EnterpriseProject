@@ -6,9 +6,10 @@
   border: none;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 8px rgba(210, 234, 7, 0.88) !important;
 }
 
 .btn-detail:hover {
   background-color: #FFB90F;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 8px rgb(210, 234, 7);
 }

@@ -11,12 +11,10 @@
 
 <div class="container">
     <div class="row">
-            <div class="col-8">
-                <h1>Comments Table</h1>
-            </div>
-            <div class="col-4">
-                <button type="button" onclick="goBack()" class="btn button-back">Back To The Ideas Page</button>
-            </div>
+        <div class="col-12">
+            <h1>Comments Table</h1>
+        </div>
+    </div>
         </div>
         <div class="card">
             <div class="card-header">
@@ -54,55 +52,45 @@
         </div>
     </form>
     <br/>
-    <div class="comments">
-        @foreach (var obj in @Model.Comments)
-        {
-            <div class="comment" id="tblData tr">
-                <div class="comment-header">
-                    <span class="comment-user">
-                        @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
+<div class="comments">
+    @foreach (var obj in @Model.Comments)
+    {
+        <div class="comment" id="tblData tr">
+            <div class="comment-header">
+                <span class="comment-user">
+                    @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
+                    {
+                        @obj.ApplicationUser.FullName
+                    }
+                    else
+                    {
+                        <TempData>anonymous</TempData>
+                    }
+                </span>
+                <span class="comment-datetime">@obj.DateTime</span>
+            </div>
+            <div class="comment-body">
+                <div class="comment-text">@obj.Text</div>
+                <div class="comment-actions">
+                    @{
+                        var claimsIdentity = (ClaimsIdentity)User.Identity;
+                        var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+                    }
+                    @if (obj.UserId == claims.Value)
+                    {
+                        //edit comments
+                        @if (User.IsInRole(SD.Role_Staff) || User.IsInRole(SD.Role_Coordinator) || User.IsInRole(SD.Role_Manager) || User.IsInRole(SD.Role_Admin))
                         {
-                            @obj.ApplicationUser.FullName
-                        }
-                        else
-                        {
-                            <TempData>anonymous</TempData>
-                        }
-                    </span>
-                    <span class="comment-datetime">@obj.DateTime</span>
-                </div>
-                <div class="comment-body">
-                    <div class="comment-text">@obj.Text</div>
-                    <div class="comment-actions">
-                        @{
-                            var claimsIdentity = (ClaimsIdentity)User.Identity;
-                            var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-                        }
-                        @if (obj.UserId == claims.Value)
-                        {
-                            //edit comments
-                            @if (User.IsInRole(SD.Role_Staff) || User.IsInRole(SD.Role_Coordinator) || User.IsInRole(SD.Role_Manager) || User.IsInRole(SD.Role_Admin))
-                            {
-                                <a class="comment-action edit" asp-controller="Comments" asp-action="UpDate" asp-route-id="@obj.Id"><i class="fa-solid fa-pen-to-square"></i> Update</a>
-                                <a class="comment-action delete" asp-controller="Comments" asp-action="Delete" asp-route-id="@obj.Id"><i class="fa-solid fa-trash-can"></i> Delete</a>
-                            }
-                        }else if(User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
-                        {
-                            //delete
+                            <a class="comment-action edit" asp-controller="Comments" asp-action="UpDate" asp-route-id="@obj.Id"><i class="fa-solid fa-pen-to-square"></i> Update</a>
                             <a class="comment-action delete" asp-controller="Comments" asp-action="Delete" asp-route-id="@obj.Id"><i class="fa-solid fa-trash-can"></i> Delete</a>
                         }
-                    </div>
+                    }else if(User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
+                    {
+                        //delete
+                        <a class="comment-action delete" asp-controller="Comments" asp-action="Delete" asp-route-id="@obj.Id"><i class="fa-solid fa-trash-can"></i> Delete</a>
+                    }
                 </div>
             </div>
-        }
-    </div>
+        </div>
+    }
 </div>
-
-@section Scripts
-{
-    <script>
-     function goBack(){
-         window.history.back();
-     }  
-  </script>
-}

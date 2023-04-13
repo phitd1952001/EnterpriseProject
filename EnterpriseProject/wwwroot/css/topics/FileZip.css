@@ -1,4 +1,4 @@
-﻿.button-back {
+﻿.button-fileZip {
   display: inline-block;
   padding: 8px 16px;
   font-size: 14px;
@@ -7,16 +7,14 @@
   text-decoration: none;
   text-transform: uppercase;
   border-radius: 5px;
-  background-color: #009900;
-  box-shadow: 0px 5px 10px rgba(0, 153, 0, 0.4);
+  background-color: #0077be;
   transition: background-color 0.3s ease;
+  box-shadow: 0px 5px 10px rgba(34, 255, 248, 0.86) !important;
 }
 
-.button-back:hover {
-  background-color: #00cc00;
+.button-fileZip:hover {
+  background-color: #0099cc;
+  box-shadow: 0px 5px 10px rgb(6, 232, 225);
 }
 
-.button-back:active {
-  background-color: #006600;
-  box-shadow: none;
-}
+

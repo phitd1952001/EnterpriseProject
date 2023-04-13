@@ -46,7 +46,7 @@
                              
                         </li>
                     }
-                    @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager) || User.IsInRole(SD.Role_Staff))
+                    @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager) || User.IsInRole(SD.Role_Staff) || User.IsInRole(SD.Role_Coordinator))
                     {
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Authenticated" asp-controller="Topics" asp-action="index">Topics</a>

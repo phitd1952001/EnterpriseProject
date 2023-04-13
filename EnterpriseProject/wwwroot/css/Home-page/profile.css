@@ -1,0 +1,48 @@
+﻿/* Định dạng cho các cart */
+.cart {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin: 20px;
+    display: inline-block; /* Cart tự động xuống hàng */
+    vertical-align: top;
+    text-align: center;
+    width: 200px;
+    height: 300px;
+}
+/* Định dạng cho hình ảnh trong các cart */
+.cart img {
+    max-width: 100%;
+    height: auto;
+}
+/* Định dạng cho tên và thông tin trong các cart */
+.cart h2, .cart p {
+    margin: 10px;
+}
+/* Định dạng cho các mạng xã hội trong các cart */
+.cart ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px;
+}
+.cart li {
+    display: inline-block;
+    margin-right: 10px;
+}
+.cart li a {
+    display: block;
+    width: 30px;
+    height: 30px;
+    background-color: #ccc;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 20px;
+    text-decoration: none;
+}
+/* Định dạng cho màn hình nhỏ */
+@media screen and (max-width: 768px) {
+    .cart {
+        display: block;
+    }
+}

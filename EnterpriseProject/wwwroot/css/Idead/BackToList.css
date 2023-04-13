@@ -1,4 +1,4 @@
-﻿.button-back {
+﻿.button-back-to-list {
   display: inline-block;
   padding: 8px 16px;
   font-size: 14px;
@@ -7,16 +7,16 @@
   text-decoration: none;
   text-transform: uppercase;
   border-radius: 5px;
-  background-color: #009900;
-  box-shadow: 0px 5px 10px rgba(0, 153, 0, 0.4);
+  background-color: #00BFFF; /* Đổi màu nền sang xanh nước biển */
+  box-shadow: 0px 5px 10px rgba(0, 117, 153, 0.4);
   transition: background-color 0.3s ease;
 }
 
-.button-back:hover {
-  background-color: #00cc00;
+.button-back-to-list:hover {
+  background-color: #87CEEB; /* Đổi màu khi hover */
 }
 
-.button-back:active {
-  background-color: #006600;
+.button-back-to-list:active {
+  background-color: #00BFFF; /* Đổi màu khi active */
   box-shadow: none;
 }

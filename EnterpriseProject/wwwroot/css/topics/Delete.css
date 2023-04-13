@@ -6,9 +6,10 @@
   border: none;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 8px rgb(225, 16, 16);
 }
 
 .btn-delete:hover {
   background-color: #EE0000;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 8px rgb(255, 6, 6);
 }

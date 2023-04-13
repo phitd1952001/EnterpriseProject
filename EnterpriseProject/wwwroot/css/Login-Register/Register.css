@@ -47,7 +47,7 @@
   border-radius: 4px;
 }
 
-.btn {
+.button-register {
   padding: 12px 24px;
   font-size: 16px;
   border: none;
@@ -60,7 +60,7 @@
   display: block;
 }
 
-.btn:hover {
+.button-register:hover {
   background-color: #ccc;
   color: #333;
 }

@@ -1,5 +1,6 @@
 ﻿@using EnterpriseProject.Utility
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using System.Security.Claims
 @model EnterpriseProject.ViewModels.TopicsVM
 
 @{
@@ -16,19 +17,19 @@
                 <h1>Idea Table</h1>
             </div>
             <div class="col-md-8">
-                @if (Model.Topic.ClosureDate > DateTime.Now)
-                {
-                    <a asp-controller="Ideas" asp-action="Upsert" asp-route-topicId="@Model.Topic.Id" class="btn btn-primary float-md-right button-create"><i class="fas fa-plus"></i> &nbsp;Create New Idea</a>
-                }
-                <form class="form-inline my-2 my-lg-0 float-md-right">
-                    <input id="myInput" class="form-control mr-sm-2" type="text" placeholder="Search">
-                </form>
+                <div class="d-flex justify-content-end">
+                    @if (Model.Topic.ClosureDate > DateTime.Now)
+                    {
+                        <a asp-controller="Ideas" asp-action="Upsert" asp-route-topicId="@Model.Topic.Id" class="btn btn-primary float-md-right button-create mr-1"><i class="fas fa-plus"></i> &nbsp;Create New Idea</a>
+                    }
+                    @* <form class="form-inline my-2 my-lg-0 float-md-right"> *@
+                    @*     <input id="myInput" class="form-control mr-sm-2" type="text" placeholder="Search"> *@
+                    @* </form> *@
+                    <a asp-controller="Topics" asp-action="Index" class="btn btn-secondary button-back-to-list">Back To Topics Page</a>
+                </div>
             </div>
         </div>
     <div class="row mt-2">
-        <div class="col-md-12">
-            <a asp-controller="Topics" asp-action="Index" class="btn btn-secondary button-back">Back To Topics Page</a>
-        </div>
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
@@ -118,7 +119,11 @@
                             </a>
                         }
                     }
-                    @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
+                    @{
+                        var claimsIdentity = (ClaimsIdentity)User.Identity;
+                        var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+                    }
+                    @if (obj.Idea.UserId == claims.Value)
                     {
                         <a asp-controller="Ideas" asp-action="Upsert" asp-route-id="@obj.Idea.Id" asp-route-topicId="@Model.Topic.Id" class="btn btn-outline-warning btn-sm">
                             <i class="fa-solid fa-pen-to-square"></i>
@@ -128,6 +133,20 @@
                             <i class="fa-solid fa-trash-can"></i>
                             <span>Delete</span>
                         </a>
+                    }
+                    else 
+                    {
+                        @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
+                        {
+                            <a asp-controller="Ideas" asp-action="Upsert" asp-route-id="@obj.Idea.Id" asp-route-topicId="@Model.Topic.Id" class="btn btn-outline-warning btn-sm">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                                <span>Edit</span>
+                            </a>
+                            <a asp-controller="Ideas" asp-action="Delete" asp-route-id="@obj.Idea.Id" class="btn btn-outline-danger btn-sm">
+                                <i class="fa-solid fa-trash-can"></i>
+                                <span>Delete</span>
+                            </a>
+                        }
                     }
                 </div>
             </div>

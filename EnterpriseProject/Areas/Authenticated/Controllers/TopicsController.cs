@@ -17,7 +17,7 @@ using File = EnterpriseProject.Models.File;
 namespace EnterpriseProject.Areas.Authenticated.Controllers
 {
     [Area(SD.Authenticated)]
-    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Manager + "," + SD.Role_Staff)]
+    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Manager + "," + SD.Role_Staff + "," + SD.Role_Coordinator)]
     
     public class TopicsController : Controller
     {
@@ -89,7 +89,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             var zipFile = _db.Files.Where(f => fileIds.Contains(f.Id)).ToList();
 
             // Tạo một thư mục tạm để lưu trữ các tệp
-            var tempDirectory = Path.Combine(Path.GetTempPath(), _db.Topics.Find(topicId).Name);
+            var tempDirectory = Path.Combine(Path.GetTempPath(), _db.Topics.Find(topicId).Id.ToString());
             //var tempDirectory = Path.Combine("E:", _db.Topics.Find(topicId).Name);
             
             
