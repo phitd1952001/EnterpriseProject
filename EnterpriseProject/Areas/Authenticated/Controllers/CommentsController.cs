@@ -108,7 +108,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
             {
                 await _emailSender
                     .SendEmailAsync(userOwnerIdea.Email, "New Comment for your idea",
-                        $"<h1>New Comment for your idea from {_db.ApplicationUsers.Find(claims.Value).FullName} {idea.Text}</h1>");
+                        $"<div style='color: black;'><h1 style='color: black;'>Have a new comment on your idea</h1><p style='color: black;'><strong>From:</strong> {_db.ApplicationUsers.Find(claims.Value).FullName} ({_db.ApplicationUsers.Find(claims.Value).Email})</p><p style='color: black;'><strong>Content new comments are:</strong> {comment.Text}</p><p style='color: black;'><strong>Further Comments in the Idea:</strong> {_db.Ideas.Find(idea.Id).Text}</p><p style='color: black;'><strong>Time for posting Comment:</strong> {_db.Ideas.Find(idea.Id).DateTime}</p><p style='color: black;'><strong>Best Regards!</strong></p></div></div>");
             }
             return RedirectToAction(nameof(Index), new {ideaId = commentVm.IdeaId});
         }
