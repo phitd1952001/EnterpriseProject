@@ -99,7 +99,7 @@
                 <div class="react-buttons">
                     @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager) || User.IsInRole(SD.Role_Staff) || User.IsInRole(SD.Role_Coordinator))
                     {
-                        if (obj.Idea.Topic.ClosureDate > DateTime.Now && obj.Idea.Topic.FinalClosureDate > DateTime.Now)
+                        @if (obj.Idea.Topic.FinalClosureDate > DateTime.Now)
                         {
                             <a asp-controller="React" asp-action="Like" asp-route-ideaId="@obj.Idea.Id" class="btn btn-outline-primary btn-sm">
                                 <i class="fa-regular fa-thumbs-up"></i>
@@ -119,22 +119,26 @@
                             </a>
                         }
                     }
+                    
                     @{
                         var claimsIdentity = (ClaimsIdentity)User.Identity;
                         var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
                     }
                     @if (obj.Idea.UserId == claims.Value)
                     {
-                        <a asp-controller="Ideas" asp-action="Upsert" asp-route-id="@obj.Idea.Id" asp-route-topicId="@Model.Topic.Id" class="btn btn-outline-warning btn-sm">
-                            <i class="fa-solid fa-pen-to-square"></i>
-                            <span>Edit</span>
-                        </a>
-                        <a asp-controller="Ideas" asp-action="Delete" asp-route-id="@obj.Idea.Id" class="btn btn-outline-danger btn-sm">
-                            <i class="fa-solid fa-trash-can"></i>
-                            <span>Delete</span>
-                        </a>
+                        @if (obj.Idea.Topic.ClosureDate > DateTime.Now && obj.Idea.Topic.FinalClosureDate > DateTime.Now)
+                        {
+                            <a asp-controller="Ideas" asp-action="Upsert" asp-route-id="@obj.Idea.Id" asp-route-topicId="@Model.Topic.Id" class="btn btn-outline-warning btn-sm">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                                <span>Edit</span>
+                            </a>
+                            <a asp-controller="Ideas" asp-action="Delete" asp-route-id="@obj.Idea.Id" onclick="confirm('Do you want to delete')" class="btn btn-outline-danger btn-sm">
+                                <i class="fa-solid fa-trash-can"></i>
+                                <span>Delete</span>
+                            </a>
+                        }
                     }
-                    else 
+                    else
                     {
                         @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
                         {
@@ -142,7 +146,7 @@
                                 <i class="fa-solid fa-pen-to-square"></i>
                                 <span>Edit</span>
                             </a>
-                            <a asp-controller="Ideas" asp-action="Delete" asp-route-id="@obj.Idea.Id" class="btn btn-outline-danger btn-sm">
+                            <a asp-controller="Ideas" asp-action="Delete" asp-route-id="@obj.Idea.Id" onclick="confirm('Do you want to delete')" class="btn btn-outline-danger btn-sm">
                                 <i class="fa-solid fa-trash-can"></i>
                                 <span>Delete</span>
                             </a>

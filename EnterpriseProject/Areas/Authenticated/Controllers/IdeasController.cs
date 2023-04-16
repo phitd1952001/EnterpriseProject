@@ -160,7 +160,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                         if (qaCoordinator != null && qaCoordinator.Email != null)
                         {
                             await _emailSender.SendEmailAsync(qaCoordinator.Email, "New Idea Is Added",
-                                $"<div style='color: black;'><h1>New Idea Is Added</h1><p><strong>From:</strong> {_db.ApplicationUsers.Find(claims.Value).FullName} ({_db.ApplicationUsers.Find(claims.Value).Email})</p><p><strong>The new idea's name is added by:</strong> {_db.Ideas.Find(ideaCreate.Id).Text}</p><p><strong>ideas added in topics:</strong> {_db.Topics.Find(ideaVm.TopicId).Name}</p><p><strong>Time for posting ideas:</strong> {_db.Ideas.Find(ideaCreate.Id).DateTime}</p><p><strong>Best Regards!</strong></p></div>");
+                                $"<div style='color: black;'><h1 style='color: black;'>New Idea Is Added</h1><p style='color: black;'><strong>From:</strong> {_db.ApplicationUsers.Find(claims.Value).FullName} ({_db.ApplicationUsers.Find(claims.Value).Email})</p><p style='color: black;'><strong>The new idea's name is added by:</strong> {_db.Ideas.Find(ideaCreate.Id).Text}</p><p style='color: black;'><strong>ideas added in topics:</strong> {_db.Topics.Find(ideaVm.TopicId).Name}</p><p style='color: black;'><strong>Time for posting ideas:</strong> {_db.Ideas.Find(ideaCreate.Id).DateTime}</p><p style='color: black;'><strong>Best Regards!</strong></p></div>");
                         }
                         TempData["Message"] = "Success: Add Successfully";
                         return RedirectToAction(nameof(Index), new {topicId = ideaVm.TopicId});
