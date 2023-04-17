@@ -111,7 +111,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                 {
                     if (ideaVm.Id == 0)
                     {
-                            // SendEmail to QA coordinator
+                        // SendEmail to QA coordinator
                         var currentUser = _db.ApplicationUsers.FirstOrDefault(i => i.Id == claims.Value);
                         var userList = _db.ApplicationUsers.Where(_ => _.DepartmentId == currentUser.DepartmentId).ToList();
                         ApplicationUser qaCoordinator = new ApplicationUser();
@@ -156,7 +156,7 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                         _db.Ideas.Add(ideaCreate);
                         _db.SaveChanges();
 
-                        //check idea được add thành công hay không và send mail to coordinator
+                        // Check idea is successful or not and send mail to coordinator
                         if (qaCoordinator != null && qaCoordinator.Email != null)
                         {
                             await _emailSender.SendEmailAsync(qaCoordinator.Email, "New Idea Is Added",
@@ -186,9 +186,9 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                             await ideaVm.File.CopyToAsync(memoryStream);
                             fileModel.Data = memoryStream.ToArray();
                         }
-                        // luu file new
+                        // save file new
                         _db.Files.Add(fileModel);
-                        // xoa file cu
+                        // Delete old file
                         var oldFile = _db.Files.Find(idea.FileId);
                         _db.Remove(oldFile);
                         _db.SaveChanges();

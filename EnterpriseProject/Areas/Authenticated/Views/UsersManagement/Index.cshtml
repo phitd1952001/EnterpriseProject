@@ -50,7 +50,7 @@
                         <a asp-controller="UsersManagement" asp-action="LockUnLock" asp-route-id="@obj.Id" style="color: #0000FF; font-size: 25px" class="btn-outline"><i class="fas fa-lock"></i></a>
                     }
                     <a asp-controller="UsersManagement" asp-action="ConfirmEmail" asp-route-id="@obj.Id" style="color: 	#2F4F4F; font-size: 25px" class="btn-outline"><i class="fa-solid fa-key"></i></a>
-                    <a asp-controller="UsersManagement" asp-action="Delete" onclick="confirm('Do you want to delete')" asp-route-id="@obj.Id" style="color: #c82333; font-size: 25px" class="btn-outline"><i class="fa-solid fa-trash-can"></i></a>
+                    <a asp-controller="UsersManagement" asp-action="Delete" onclick="return confirm('Do you want to delete')" asp-route-id="@obj.Id" style="color: #c82333; font-size: 25px" class="btn-outline"><i class="fa-solid fa-trash-can"></i></a>
                 </td>
             </tr>
             i++;

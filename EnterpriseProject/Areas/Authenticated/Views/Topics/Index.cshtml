@@ -69,7 +69,7 @@
                  @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
                  {
                      <a asp-controller="Topics" asp-action="Upsert" asp-route-id="@obj.Id" class="btn btn-update"><i class="fa-solid fa-pen-to-square"></i> Update</a>
-                     <a asp-controller="Topics" asp-action="Delete" asp-route-id="@obj.Id" onclick="confirm('Do you want to delete')" class="btn btn-delete"><i class="fa-solid fa-trash-can"></i> Delete</a>
+                     <a asp-controller="Topics" asp-action="Delete" asp-route-id="@obj.Id" onclick="return confirm('Do you want to delete')" class="btn btn-delete"><i class="fa-solid fa-trash-can"></i> Delete</a>
                  }
                  @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager) || User.IsInRole(SD.Role_Staff) || User.IsInRole(SD.Role_Coordinator))
                  {

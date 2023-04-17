@@ -58,21 +58,20 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
         [HttpGet]
         public async Task<IActionResult> LockUnLock(string id)
         {
-            // lấy ra tài khoản chính mình tránh bị xóa nhầm
+            // take out your account to avoid being wrongly deleted
             var claimsIdentity = (ClaimsIdentity) User.Identity;
             var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             
-            // xuống database tìm kiếm tài khoản theo Id.
+            // down the database searching accounts according to ID.
             var userNeedToLock = _db.ApplicationUsers.Where(u => u.Id == id).First();
             if (userNeedToLock.Id == claims.Value)
             {
                 //show that you're using your own earphones
             }
 
-            // Lock_out_end = null : hoặc bằng time quá khứ thì nó sẽ không lock, Bởi vì thời gian nằm ở quá khứ rồi thì thời gian hiện tại thì tài khoản sẽ không bị lock nữa. 
-            // set time lock_out_end = time tương lai thì có nghĩa tài khoản sẽ bị khóa. 
-            //	Khi mà trường lock_out_end sẽ đi so sánh với cái trường time hiện tại. nếu mà cái thời gian hiện tại nó nhỏ hơn thì tài khoản bị kháo. Còn time lớn hơn hiện tại thì tài khoản đang được mở.
-
+            // Lock_out_end = NULL: Or by Time Past, it will not lock, because the time is in the past then the present time, the account will not be locked anymore.
+            // set time lock_out_end = Time future means the account will be locked.
+            // When the Lock_out_end field will compare with the current Time School. If the current time is smaller, the account is staggered. And the time is larger than the present, the account is being opened.
             if (userNeedToLock.LockoutEnd != null && userNeedToLock.LockoutEnd > DateTime.Now)
             {
                 userNeedToLock.LockoutEnd = DateTime.Now;
@@ -95,10 +94,10 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                 UserVM userVm = new UserVM();
                 var user = _db.ApplicationUsers.Find(id);
                 userVm.ApplicationUser = user;
-                // hiển thị role cũ tránh khi ấn nút submit không chọn role
+                // Show old Role to avoid when pressing the submit button does not choose the Role
                 var roleTemp = await _userManager.GetRolesAsync(user);
                 userVm.Role = roleTemp.First();
-                // Hiển thị thêm cái role list. Nếu người dùng muốn update cái role.
+                // Show additional Role List. If the user wants to update the role.
                 userVm.Rolelist = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem()
                 {
                     Text = i,
@@ -128,9 +127,9 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                 
                 // update role
                 var oldRole = await _userManager.GetRolesAsync(user);
-                // xóa đi role cu
+                // Delete old roles
                 await _userManager.RemoveFromRoleAsync(user, oldRole.First());
-                // add role mới
+                // Add new role
                 await _userManager.AddToRoleAsync(user, userVm.Role);
 
                 _db.ApplicationUsers.Update(user);
@@ -177,8 +176,8 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
                 return View();
             }
 
-            // khởi tạo ConfirmEmailVM
-            // đưa giá trị Confirm EmailVM vào model bên dưới.
+            // initialize confirmemailvm
+            // Putting the value of emailvm confold into the model below.
             ConfirmEmailVM confirmEmailVm = new ConfirmEmailVM()
             {
                 Email = user.Email
@@ -188,18 +187,18 @@ namespace EnterpriseProject.Areas.Authenticated.Controllers
         }
 
         [HttpPost]
-        // nhận giá trị về từ ConfirmEmailVM
+        // Receive value from Confirmemailvm
         public async Task<IActionResult> ConfirmEmail(ConfirmEmailVM confirmEmailVm)
         {
             if (ModelState.IsValid)
             {
-                // dùng thư viện _userManager xuống db để kiem tra user.
+                // Use the library _usermanager down to DB to check the user.
                 var user = await _userManager.FindByEmailAsync(confirmEmailVm.Email);
-                // token này sẽ check xem coi có đúng với token và hệ thống đã giử cho email này hay không.
+                // this token will check if it is true for the token and the system has kept this email.
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
                 
-                // chuyển đến tran ResetPassword => controller UsersManagement
-                // từ khóa new khởi tạo 1 object, value toke ở ConfirmEmailVM = token ở trang resetPassword. email cũng tương tự.
+                // move to tran resetpassword => controller Usersmanagement
+                // New keywords to create 1 object, value toe at ConfirmemailVM = token at resetpassword page. The email is similar.
                 return RedirectToAction("ResetPassword", "UsersManagement", new {token = token, email = user.Email});
             }
 
