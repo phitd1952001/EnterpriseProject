@@ -97,9 +97,10 @@
             <iframe src="@Url.Action("Preview", "Ideas", new { id = obj.Idea.FileId })" width="100%" height="600"></iframe>
             <div class="card-footer mt-0">
                 <div class="react-buttons">
-                    @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager) || User.IsInRole(SD.Role_Staff) || User.IsInRole(SD.Role_Coordinator))
+                    @if (obj.Idea.Topic.FinalClosureDate > DateTime.Now)
                     {
-                        @if (obj.Idea.Topic.FinalClosureDate > DateTime.Now)
+                        @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager) || User.IsInRole(SD.Role_Staff) || User.IsInRole(SD.Role_Coordinator))
+
                         {
                             <a asp-controller="React" asp-action="Like" asp-route-ideaId="@obj.Idea.Id" class="btn btn-outline-primary btn-sm">
                                 <i class="fa-regular fa-thumbs-up"></i>
@@ -120,6 +121,18 @@
                         }
                     }
                     
+                    @if(User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
+                    {
+                        <a asp-controller="Ideas" asp-action="Upsert" asp-route-id="@obj.Idea.Id" asp-route-topicId="@Model.Topic.Id" class="btn btn-outline-warning btn-sm">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                            <span>Edit</span>
+                        </a>
+                        <a asp-controller="Ideas" asp-action="Delete" asp-route-id="@obj.Idea.Id" onclick="return confirm('Do you want to delete')" class="btn btn-outline-danger btn-sm">
+                            <i class="fa-solid fa-trash-can"></i>
+                            <span>Delete</span>
+                        </a>
+                    }
+
                     @{
                         var claimsIdentity = (ClaimsIdentity)User.Identity;
                         var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
@@ -128,28 +141,17 @@
                     {
                         @if (obj.Idea.Topic.ClosureDate > DateTime.Now && obj.Idea.Topic.FinalClosureDate > DateTime.Now)
                         {
-                            <a asp-controller="Ideas" asp-action="Upsert" asp-route-id="@obj.Idea.Id" asp-route-topicId="@Model.Topic.Id" class="btn btn-outline-warning btn-sm">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                                <span>Edit</span>
-                            </a>
-                            <a asp-controller="Ideas" asp-action="Delete" asp-route-id="@obj.Idea.Id" onclick="return confirm('Do you want to delete')" class="btn btn-outline-danger btn-sm">
-                                <i class="fa-solid fa-trash-can"></i>
-                                <span>Delete</span>
-                            </a>
-                        }
-                    }
-                    else
-                    {
-                        @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Manager))
-                        {
-                            <a asp-controller="Ideas" asp-action="Upsert" asp-route-id="@obj.Idea.Id" asp-route-topicId="@Model.Topic.Id" class="btn btn-outline-warning btn-sm">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                                <span>Edit</span>
-                            </a>
-                            <a asp-controller="Ideas" asp-action="Delete" asp-route-id="@obj.Idea.Id" onclick="return confirm('Do you want to delete')" class="btn btn-outline-danger btn-sm">
-                                <i class="fa-solid fa-trash-can"></i>
-                                <span>Delete</span>
-                            </a>
+                            @if (User.IsInRole(SD.Role_Staff) || User.IsInRole(SD.Role_Coordinator))
+                            {
+                                <a asp-controller="Ideas" asp-action="Upsert" asp-route-id="@obj.Idea.Id" asp-route-topicId="@Model.Topic.Id" class="btn btn-outline-warning btn-sm">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                    <span>Edit</span>
+                                </a>
+                                <a asp-controller="Ideas" asp-action="Delete" asp-route-id="@obj.Idea.Id" onclick="return confirm('Do you want to delete')" class="btn btn-outline-danger btn-sm">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                    <span>Delete</span>
+                                </a>
+                            }
                         }
                     }
                 </div>
